@@ -1,33 +1,40 @@
 package future.legends.pancake.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
 public class SimulationContainer {
-    private int months_left;
 
-    public SimulationContainer(int months_left) {
-        this.months_left = months_left;
+    private List<Trainee> enrolledStudents;
+    private Queue<Trainee> waitingStudents;
+    private List<TraineeCentre> centres;
+
+
+    public SimulationContainer() {
+        enrolledStudents = new ArrayList<Trainee>();
+        centres = new ArrayList<TraineeCentre>();
     }
 
-    private void monthPassed() {
-        months_left--;
-        System.out.println("A month passed, " + months_left + " months remaining");
-    }
-
-    public String start() {
-        while(months_left > 0) {
-            try {
-                Thread.sleep(100); // tenth of a second per simulated month
-                monthPassed();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return stop();
-    }
-
-    private String stop(){
+    @Override
+    public String toString(){
+        //TODO add properties here VVVVVVVVVVV
         return "Number of open centres: " +
-            "\nNumber of full centres: " +
-            "\nNumber of trainees currently training: " +
-            "\nNumber of trainees on the waiting list: ";
+                "\nNumber of full centres: " +
+                "\nNumber of trainees currently training: " +
+                "\nNumber of trainees on the waiting list: ";
     }
+
+    public List<Trainee> getEnrolledStudents() {
+        return enrolledStudents;
+    }
+
+    public Queue<Trainee> getWaitingStudents() {
+        return waitingStudents;
+    }
+
+    public List<TraineeCentre> getCentres() {
+        return centres;
+    }
+
 }
