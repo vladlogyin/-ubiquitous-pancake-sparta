@@ -1,17 +1,10 @@
 package future.legends.pancake.model;
 
 public class SimulationContainer {
-    private static int months_left = 0;
+    private int months_left;
 
-    private void start() {
-        while(months_left > 0) {
-            try {
-                Thread.sleep(250); // quarter of a second per month
-                monthPassed();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public SimulationContainer(int months_left) {
+        this.months_left = months_left;
     }
 
     private void monthPassed() {
@@ -19,11 +12,22 @@ public class SimulationContainer {
         System.out.println("A month passed, " + months_left + " months remaining");
     }
 
-    private void stop(){
-        // output:
-        // number of open centres
-        // number of full centres
-        // number of trainees currently training
-        // number of trainees on the waiting list
+    public String start() {
+        while(months_left > 0) {
+            try {
+                Thread.sleep(100); // tenth of a second per simulated month
+                monthPassed();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return stop();
+    }
+
+    private String stop(){
+        return "Number of open centres: " +
+            "\nNumber of full centres: " +
+            "\nNumber of trainees currently training: " +
+            "\nNumber of trainees on the waiting list: ";
     }
 }
