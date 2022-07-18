@@ -1,5 +1,6 @@
 package future.legends.pancake.model;
 
+import java.util.Collection;
 import java.util.Random;
 
 public class Simulator {
@@ -48,9 +49,15 @@ public class Simulator {
 
         monthsPassed++;
         if (monthsPassed > 0 && monthsPassed % 2 == 0 ) {
-            // TODO create a new centre
+            simData.getCentres().add(new TraineeCentre());
         }
-        // TODO create a random num of trainees
+        simData.getWaitingStudents().addAll(TraineeFactory.generateTrainees());
+
+        for(TraineeCentre tc : simData.getCentres())
+        {
+            if(simData.getWaitingStudents().size() == 0 ) break;
+            tc.enrollTrainees(simData.getWaitingStudents());
+        }
     }
 
     public int getMonthsPassed()
