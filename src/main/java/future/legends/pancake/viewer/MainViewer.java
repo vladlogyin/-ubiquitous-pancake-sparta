@@ -7,7 +7,7 @@ public class MainViewer {
 
     static Scanner scanner = new Scanner(System.in);
 
-    public int simulationDuration(){
+    public int getSimulationDuration(){
 
         boolean validInput = false;
         int months = 0;
@@ -32,6 +32,15 @@ public class MainViewer {
         }
 
         return months;
+
+    }
+
+    public void displaySimulationResults(int openCentres, int fullCentres, int activeTrainees, int waitingTrainees){
+
+        System.out.println("Number of open centres: " + openCentres);
+        System.out.println("Number of full centres: " + fullCentres);
+        System.out.println("Number of trainees currently training: " + activeTrainees);
+        System.out.println("Number of trainees on waiting list: " + waitingTrainees);
 
     }
 

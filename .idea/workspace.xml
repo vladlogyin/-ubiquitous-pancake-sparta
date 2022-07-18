@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e87ecbf-94e6-402f-b192-5c0ea22cd79f" name="Changes" comment="Created DisplayManager class">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/future/legends/pancake/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/future/legends/pancake/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/future/legends/pancake/display/DisplayManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/future/legends/pancake/display/DisplayManager.java" afterDir="false" />
+    <list default="true" id="8e87ecbf-94e6-402f-b192-5c0ea22cd79f" name="Changes" comment="Implemented simulationDuration function which gets months from user and performs input validation">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/future/legends/pancake/viewer/MainViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/future/legends/pancake/viewer/MainViewer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +109,7 @@
       <option name="presentableId" value="Default" />
       <updated>1658143450338</updated>
       <workItem from="1658143454557" duration="473000" />
-      <workItem from="1658148474470" duration="1960000" />
+      <workItem from="1658148474470" duration="2726000" />
     </task>
     <task id="LOCAL-00001" summary="Created DisplayManager class">
       <created>1658148788991</created>
@@ -119,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658148788991</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Implemented simulationDuration function which gets months from user and performs input validation">
+      <created>1658150707045</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1658150707045</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,6 +144,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Created DisplayManager class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created DisplayManager class" />
+    <MESSAGE value="Implemented simulationDuration function which gets months from user and performs input validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented simulationDuration function which gets months from user and performs input validation" />
   </component>
 </project>
