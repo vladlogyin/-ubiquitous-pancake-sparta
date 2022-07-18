@@ -12,7 +12,7 @@ public class TraineeCentre {
 
     public void enrollTrainees(Queue<Trainee> waitingList){
         Random r = new Random();
-        int amountToEnroll = r.nextInt((50 - 1) + 1) + 1;
+        int amountToEnroll = r.nextInt((50)) + 1;
 
         if(waitingList.isEmpty()) return; // No one to enroll.
         if(waitingList.size() < amountToEnroll) amountToEnroll = waitingList.size(); // waitingList smaller than amountToEnroll
