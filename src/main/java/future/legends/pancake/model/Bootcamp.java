@@ -17,7 +17,19 @@ public class Bootcamp extends TraineeCentre{
     @Override
     void monthPassed() {
         monthsAlive++;
-        numberOfLowAttendanceMonths++;
+
+        if (getNumberOfEnrolledTrainees() < 25) {
+            numberOfLowAttendanceMonths++;
+        } else {
+            numberOfLowAttendanceMonths = 0;
+        }
+
+        /* Moved into shouldClose();
+         *
+        if (numberOfLowAttendanceMonths >= 3) {
+            //close
+        }
+        */
     }
 
     @Override
