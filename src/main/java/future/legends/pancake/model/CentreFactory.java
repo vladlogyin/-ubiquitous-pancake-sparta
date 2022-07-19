@@ -4,22 +4,15 @@ import java.awt.*;
 import java.util.Random;
 
 public class CentreFactory {
-
-    public static TraineeCentre create(){
+    public static TraineeCentre create() {
         Random r = new Random();
         TraineeCentre tc = null;
-        switch (r.nextInt(3)){
-            case 0 -> {
-                tc = new TrainingHub();
-            }
-            case 1 -> {
-                tc = new Bootcamp();
-            }
-            case 2 -> {
-                tc = new TechCentre();
-            }
+        try {
+            return CentreType.values()[r.nextInt(CentreType.values().length)].type
+                    .getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            new RuntimeException(e);
         }
         return tc;
     }
-
 }
