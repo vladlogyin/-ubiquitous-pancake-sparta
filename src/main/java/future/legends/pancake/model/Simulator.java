@@ -78,9 +78,7 @@ public class Simulator {
             var tc = i.next();
             if(tc.getNumberOfEnrolledTrainees() < 25) {
                 var traineesToBeMoved = i.getEnrolledTrainees();
-                for (Trainee t: traineesToBeMoved) {
-                    simData.getWaitingStudents().addFirst(t);
-                }
+                simData.moveTraineesFromClosedCentre(traineesToBeMoved);
                 i.remove(); // close centre
             }
         }

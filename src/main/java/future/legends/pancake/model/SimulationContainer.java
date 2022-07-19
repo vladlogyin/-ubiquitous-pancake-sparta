@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 public class SimulationContainer {
 
     private List<Trainee> enrolledStudents;
-    private Queue<Trainee> waitingStudents;
+    private Deque<Trainee> waitingStudents;
     private List<TraineeCentre> centres;
 
 
@@ -29,8 +29,14 @@ public class SimulationContainer {
         return enrolledStudents;
     }
 
-    public Queue<Trainee> getWaitingStudents() {
+    public Deque<Trainee> getWaitingStudents() {
         return waitingStudents;
+    }
+
+    public void moveTraineesFromClosedCentre(Collection<Trainee> traineesToBeMoved) {
+        for (Trainee t: traineesToBeMoved) {
+            waitingStudents.addFirst(t);
+        }
     }
 
     public List<TraineeCentre> getCentres() {
