@@ -1,6 +1,7 @@
 package future.legends.pancake.model;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Simulator {
@@ -50,15 +51,37 @@ public class Simulator {
         }
 
         monthsPassed++;
-        if (monthsPassed > 0 && monthsPassed % 2 == 0 ) {
-            simData.getCentres().add(new TraineeCentre());
-        }
-        simData.getWaitingStudents().addAll(TraineeFactory.generateTrainees());
+        everyMonthActivity();
+        if (monthsPassed > 0 && monthsPassed % 2 == 0 ) everyTwoMonthsActivity();
+        if (monthsPassed > 0 && monthsPassed % 3 == 0 ) everyThreeMonthsActivity();
+    }
 
+    private void everyMonthActivity() {
+        simData.getWaitingStudents().addAll(TraineeFactory.generateTrainees());
         for(TraineeCentre tc : simData.getCentres())
         {
             if(simData.getWaitingStudents().size() == 0 ) break;
             tc.enrollTrainees(simData.getWaitingStudents());
+        }
+        checkCentresForInactivity();
+    }
+    private void everyTwoMonthsActivity() {
+        simData.getCentres().add(new TraineeCentre());
+    }
+    private void everyThreeMonthsActivity() {
+
+    }
+    private void checkCentresForInactivity() {
+        Iterator<TraineeCentre> i = simData.getCentres().iterator();
+        while(i.hasNext())
+        {
+            var tc = i.next();
+            if(tc.getNumberOfEnrolledTrainees() < 25) {
+                for (Trainee t: i.getEnrolledTrainees()) {
+                    simData.getWaitingStudents().addFirst(t);
+                }
+                i.remove(); // close centre
+            }
         }
     }
 
