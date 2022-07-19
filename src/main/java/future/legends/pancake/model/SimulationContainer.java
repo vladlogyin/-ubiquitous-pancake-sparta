@@ -19,10 +19,10 @@ public class SimulationContainer {
     @Override
     public String toString(){
         //TODO add properties here VVVVVVVVVVV
-        return "Number of open centres: " +
-                "\nNumber of full centres: " +
-                "\nNumber of trainees currently training: " +
-                "\nNumber of trainees on the waiting list: ";
+        return "Number of open centres: " + centres.size() +
+                "\nNumber of full centres: " + centres.stream().filter((c)->{return c.getAvailableSpots()<=0;}).count() +
+                "\nNumber of trainees currently training: " + enrolledStudents.size() +
+                "\nNumber of trainees on the waiting list: " + waitingStudents.size();
     }
 
     public List<Trainee> getEnrolledStudents() {
