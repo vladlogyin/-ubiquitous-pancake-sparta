@@ -1,26 +1,21 @@
 package future.legends.pancake.model;
 
 public class Trainee {
-    // Place in Trainee Parameters Here
-    // private _______
-    // private _______
-    // private _______
+    private TraineeCourse courseType;
 
-
-//    public Trainee(```params here```) {
-//        this.paramName = paramName;
-//    }
+    public Trainee(TraineeCourse courseType) {
+        this.courseType = courseType;
+    }
 
     public Trainee() {
 
     }
 
-    /*
 
-
-    Getters & Setters
-
-
-
-     */
+    public TraineeCourse getCourseType() {
+        return courseType;
+    }
+    public void setCourseType(TraineeCourse courseType) {
+        this.courseType = courseType;
+    }
 }
