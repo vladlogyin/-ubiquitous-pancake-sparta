@@ -1,9 +1,16 @@
 package future.legends.pancake.model;
 
 public enum TraineeCourse {
-    JAVA,
-    C,
-    DEVOPS,
-    DATA,
-    BUSINESS
+    JAVA ("Java"),
+    C ("C#"),
+    DEVOPS("DevOps"),
+    DATA("Data"),
+    BUSINESS("Business");
+
+    private final String courseName;
+
+    TraineeCourse(String courseName) {
+
+        this.courseName = courseName;
+    }
 }
