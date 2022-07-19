@@ -66,7 +66,7 @@ public class Simulator {
         checkCentresForInactivity();
     }
     private void everyTwoMonthsActivity() {
-        simData.getCentres().add(new TraineeCentre());
+        simData.getCentres().add(CentreFactory.create());
     }
     private void everyThreeMonthsActivity() {
 
