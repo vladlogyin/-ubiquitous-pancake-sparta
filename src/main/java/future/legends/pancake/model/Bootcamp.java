@@ -16,12 +16,13 @@ public class Bootcamp extends TraineeCentre{
 
     @Override
     void monthPassed() {
+        monthsAlive++;
         numberOfLowAttendanceMonths++;
     }
 
     @Override
-    void close() {
-
+    boolean shouldClose() {
+        return false;
     }
 
     @Override

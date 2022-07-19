@@ -7,11 +7,11 @@ public class TrainingHub extends TraineeCentre{
 
     @Override
     void monthPassed() {
-
+        monthsAlive++;
     }
 
     @Override
-    void close() {
-
+    boolean shouldClose() {
+        return false;
     }
 }
