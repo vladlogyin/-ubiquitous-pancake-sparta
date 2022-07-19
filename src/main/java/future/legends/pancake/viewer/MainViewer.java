@@ -66,7 +66,7 @@ public class MainViewer {
 
     }
 
-    public void displaySimulationResults(int openCentres, int fullCentres, int activeTrainees, int waitingTrainees){
+    public void displaySimulationReport(int openCentres, int fullCentres, int activeTrainees, int waitingTrainees){
 
         System.out.println("Number of open centres: " + openCentres);
         System.out.println("Number of full centres: " + fullCentres);
