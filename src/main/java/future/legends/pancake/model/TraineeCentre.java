@@ -27,7 +27,7 @@ public class TraineeCentre {
         }
     }
 
-    private int getAvailableSpots(){
+    public int getAvailableSpots(){
         return CAPACITY - getNumberOfEnrolledTrainees();
     }
 }
