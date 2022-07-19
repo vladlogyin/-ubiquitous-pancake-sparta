@@ -9,6 +9,7 @@ public class Controller {
         MainViewer mainViewer = new MainViewer();
 
         simulator.simulateMonths(mainViewer.getSimulationDuration());
+        System.out.println(simulator.toString());
         //mainViewer.displaySimulationResults();
     }
 }
