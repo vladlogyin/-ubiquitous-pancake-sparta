@@ -34,7 +34,7 @@ public class Bootcamp extends TraineeCentre{
 
     @Override
     boolean shouldClose() {
-        return false;
+        return numberOfLowAttendanceMonths >= 3;
     }
 
     @Override
