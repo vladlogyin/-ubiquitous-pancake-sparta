@@ -11,7 +11,6 @@ public class Trainee {
 
     }
 
-
     public TraineeCourse getCourseType() {
         return courseType;
     }
