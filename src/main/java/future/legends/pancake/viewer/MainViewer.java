@@ -26,7 +26,7 @@ public class MainViewer {
                 }
             }
             catch(InputMismatchException e){
-                System.out.println("\nPlease enter a positive integer that is greater than 0\n");
+                System.out.println("\nInvalid Input: Please enter a positive integer that is greater than 0\n");
                 scanner.nextLine();
             }
         }
