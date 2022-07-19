@@ -4,6 +4,7 @@ import java.util.*;
 
 public abstract class TraineeCentre {
     int capacity;
+    int monthsAlive;
     Collection<Trainee> enrolledTrainees = new ArrayList<>();
 
     public int getNumberOfEnrolledTrainees(){
@@ -13,6 +14,8 @@ public abstract class TraineeCentre {
     public Collection<Trainee> getEnrolledTrainees(){
         return enrolledTrainees;
     }
+
+    abstract void monthPassed();
 
     void enrollTrainees(Queue<Trainee> waitingList){
         Random r = new Random();
