@@ -14,8 +14,9 @@ public abstract class TraineeCentre {
     public Collection<Trainee> getEnrolledTrainees(){
         return enrolledTrainees;
     }
-
     abstract void monthPassed();
+
+    abstract void close();
 
     void enrollTrainees(Queue<Trainee> waitingList){
         Random r = new Random();

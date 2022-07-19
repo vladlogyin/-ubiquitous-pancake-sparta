@@ -20,6 +20,11 @@ public class Bootcamp extends TraineeCentre{
     }
 
     @Override
+    void close() {
+
+    }
+
+    @Override
     void enrollTrainees(Queue<Trainee> waitingList) {
         // TODO maybe instead of accepting 1-50 random employees implement a method that
         //      takes on as many trainees as possible.
