@@ -35,20 +35,20 @@ public class MainViewer {
 
     }
 
-    public int getSimulationOutputFrequency(){
+    public int getSimulationReportFrequency(){
 
         boolean validInput = false;
-        int frequencyChoice = 0;
+        int reportFrequency = 0;
 
         while (!validInput){
 
-            System.out.println("When would you like to receive simulation information? Select a number: ");
+            System.out.println("When would you like to receive simulation reports? Select a number: ");
             System.out.println("1. End of simulation");
             System.out.println("2. End of every month");
 
             try{
-                frequencyChoice = scanner.nextInt();
-                if (frequencyChoice == 1 || frequencyChoice == 2){
+                reportFrequency = scanner.nextInt();
+                if (reportFrequency == 1 || reportFrequency == 2){
                     validInput = true;
                 }
                 else{
@@ -62,7 +62,7 @@ public class MainViewer {
 
         }
 
-        return frequencyChoice;
+        return reportFrequency;
 
     }
 
