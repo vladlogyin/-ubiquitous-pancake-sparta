@@ -5,14 +5,12 @@ import java.util.stream.Stream;
 
 public class SimulationContainer {
 
-    private List<Trainee> enrolledStudents;
     private Deque<Trainee> waitingStudents;
     private List<TraineeCentre> centres;
 
 
     public SimulationContainer() {
         waitingStudents = new LinkedList<>();
-        enrolledStudents = new ArrayList<Trainee>();
         centres = new ArrayList<TraineeCentre>();
     }
 
@@ -21,12 +19,26 @@ public class SimulationContainer {
         //TODO add properties here VVVVVVVVVVV
         return "Number of open centres: " + centres.size() +
                 "\nNumber of full centres: " + centres.stream().filter((c)->{return c.getAvailableSpots()<=0;}).count() +
-                "\nNumber of trainees currently training: " + enrolledStudents.size() +
+                "\nNumber of trainees currently training: " + countEnrolledStudents() +
                 "\nNumber of trainees on the waiting list: " + waitingStudents.size();
     }
 
-    public List<Trainee> getEnrolledStudents() {
-        return enrolledStudents;
+    public List<Trainee> generateEnrolledStudents() {
+        ArrayList<Trainee> enrolledTrainees= new ArrayList<>();
+        for(TraineeCentre tc : centres)
+        {
+            enrolledTrainees.addAll(tc.getEnrolledTrainees());
+        }
+        return enrolledTrainees;
+    }
+
+    public int countEnrolledStudents() {
+        int count = 0;
+        for(TraineeCentre tc : centres)
+        {
+            count+=tc.getEnrolledTrainees().size();
+        }
+        return count;
     }
 
     public Deque<Trainee> getWaitingStudents() {
