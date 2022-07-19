@@ -1,8 +1,7 @@
 package future.legends.pancake.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class SimulationContainer {
 
@@ -12,6 +11,7 @@ public class SimulationContainer {
 
 
     public SimulationContainer() {
+        waitingStudents = new LinkedList<>();
         enrolledStudents = new ArrayList<Trainee>();
         centres = new ArrayList<TraineeCentre>();
     }

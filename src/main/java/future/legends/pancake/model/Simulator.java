@@ -16,11 +16,13 @@ public class Simulator {
     public Simulator()
     {
         rnd = new Random();
+        simData = new SimulationContainer();
     }
 
     public Simulator(int seed)
     {
         rnd = new Random(seed);
+        simData = new SimulationContainer();
     }
 
     /**
