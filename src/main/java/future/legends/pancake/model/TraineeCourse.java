@@ -8,9 +8,12 @@ public enum TraineeCourse {
     BUSINESS("Business");
 
     private final String courseName;
-
     TraineeCourse(String courseName) {
 
         this.courseName = courseName;
+    }
+
+    public String getCourseName() {
+        return courseName;
     }
 }
