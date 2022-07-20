@@ -15,6 +15,29 @@ public class Bootcamp extends TraineeCentre{
     }
 
     @Override
+    void monthPassed() {
+        monthsAlive++;
+
+        if (getNumberOfEnrolledTrainees() < 25) {
+            numberOfLowAttendanceMonths++;
+        } else {
+            numberOfLowAttendanceMonths = 0;
+        }
+
+        /* Moved into shouldClose();
+         *
+        if (numberOfLowAttendanceMonths >= 3) {
+            //close
+        }
+        */
+    }
+
+    @Override
+    boolean shouldClose() {
+        return numberOfLowAttendanceMonths >= 3;
+    }
+
+    @Override
     void enrollTrainees(Queue<Trainee> waitingList) {
         // TODO maybe instead of accepting 1-50 random employees implement a method that
         //      takes on as many trainees as possible.
