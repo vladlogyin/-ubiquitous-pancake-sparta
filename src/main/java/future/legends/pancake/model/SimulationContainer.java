@@ -8,10 +8,14 @@ public class SimulationContainer {
     private Deque<Trainee> waitingStudents;
     private List<TraineeCentre> centres;
 
+    private CentreFactory centreFactory;
+    private QueueProvider queueProvider;
 
     public SimulationContainer() {
         waitingStudents = new LinkedList<>();
         centres = new ArrayList<TraineeCentre>();
+        queueProvider = new QueueProvider();
+        centreFactory = new CentreFactory();
     }
 
     @Override
@@ -53,6 +57,16 @@ public class SimulationContainer {
 
     public List<TraineeCentre> getCentres() {
         return centres;
+    }
+
+    public QueueProvider getQueueProvider()
+    {
+        return queueProvider;
+    }
+
+    public CentreFactory getCentreFactory()
+    {
+        return centreFactory;
     }
 
 }
