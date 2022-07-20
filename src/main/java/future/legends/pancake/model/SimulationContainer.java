@@ -1,40 +1,72 @@
 package future.legends.pancake.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class SimulationContainer {
 
-    private List<Trainee> enrolledStudents;
-    private Queue<Trainee> waitingStudents;
+    private Deque<Trainee> waitingStudents;
     private List<TraineeCentre> centres;
 
+    private CentreFactory centreFactory;
+    private QueueProvider queueProvider;
 
     public SimulationContainer() {
-        enrolledStudents = new ArrayList<Trainee>();
+        waitingStudents = new LinkedList<>();
         centres = new ArrayList<TraineeCentre>();
+        queueProvider = new QueueProvider();
+        centreFactory = new CentreFactory();
     }
 
     @Override
     public String toString(){
         //TODO add properties here VVVVVVVVVVV
-        return "Number of open centres: " +
-                "\nNumber of full centres: " +
-                "\nNumber of trainees currently training: " +
-                "\nNumber of trainees on the waiting list: ";
+        return "Number of open centres: " + centres.size() +
+                "\nNumber of full centres: " + centres.stream().filter((c)->{return c.getAvailableSpots()<=0;}).count() +
+                "\nNumber of trainees currently training: " + countEnrolledStudents() +
+                "\nNumber of trainees on the waiting list: " + waitingStudents.size();
     }
 
-    public List<Trainee> getEnrolledStudents() {
-        return enrolledStudents;
+    public List<Trainee> generateEnrolledStudents() {
+        ArrayList<Trainee> enrolledTrainees= new ArrayList<>();
+        for(TraineeCentre tc : centres)
+        {
+            enrolledTrainees.addAll(tc.getEnrolledTrainees());
+        }
+        return enrolledTrainees;
     }
 
-    public Queue<Trainee> getWaitingStudents() {
+    public int countEnrolledStudents() {
+        int count = 0;
+        for(TraineeCentre tc : centres)
+        {
+            count+=tc.getEnrolledTrainees().size();
+        }
+        return count;
+    }
+
+    public Deque<Trainee> getWaitingStudents() {
         return waitingStudents;
+    }
+
+    public void moveTraineesFromClosedCentre(Collection<Trainee> traineesToBeMoved) {
+        for (Trainee t: traineesToBeMoved) {
+            waitingStudents.addFirst(t);
+        }
     }
 
     public List<TraineeCentre> getCentres() {
         return centres;
+    }
+
+    public QueueProvider getQueueProvider()
+    {
+        return queueProvider;
+    }
+
+    public CentreFactory getCentreFactory()
+    {
+        return centreFactory;
     }
 
 }
