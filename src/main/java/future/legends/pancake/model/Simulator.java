@@ -69,6 +69,7 @@ public class Simulator {
                 simData.getQueueProvider().addTrainees(traineesToBeMoved,true);
                 i.remove(); // close centre
                 simData.getCentreFactory().delete(tc);
+                simData.getClosedCentres().add(tc); // keep track of closed centres
             }
         }
         // **training**
