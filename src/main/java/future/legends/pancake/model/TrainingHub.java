@@ -3,12 +3,12 @@ package future.legends.pancake.model;
 import java.util.Queue;
 
 public class TrainingHub extends TraineeCentre{
-    TrainingHub(){
+    public TrainingHub(){
         capacity = 100;
     }
 
     @Override
-    void enrollTrainees(Queue<Trainee> waitingList) {
+    public void enrollTrainees(Queue<Trainee> waitingList) {
         if(waitingList.isEmpty()) return;
 
         int amountToEnroll = getAvailableSpots();
@@ -18,7 +18,7 @@ public class TrainingHub extends TraineeCentre{
     }
 
     @Override
-    void monthPassed() {
+    public void monthPassed() {
         monthsAlive++;
     }
 

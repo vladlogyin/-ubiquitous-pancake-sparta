@@ -20,7 +20,7 @@ public abstract class TraineeCentre {
         return enrolledTrainees.size()<25;
     }
 
-    void enrollTrainees(Queue<Trainee> waitingList){
+    public void enrollTrainees(Queue<Trainee> waitingList){
         Random r = new Random();
         int amountToEnroll = r.nextInt((50)) + 1;
 
@@ -31,7 +31,7 @@ public abstract class TraineeCentre {
         enrollTrainees(waitingList, amountToEnroll);
     }
 
-    protected void enrollTrainees(Queue<Trainee> waitingList, int toEnroll){
+    public void enrollTrainees(Queue<Trainee> waitingList, int toEnroll){
         for (int i = 0; i < toEnroll; i++) {
             enrolledTrainees.add(waitingList.remove());
         }
