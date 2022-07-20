@@ -23,13 +23,6 @@ public class Bootcamp extends TraineeCentre{
         } else {
             numberOfLowAttendanceMonths = 0;
         }
-
-        /* Moved into shouldClose();
-         *
-        if (numberOfLowAttendanceMonths >= 3) {
-            //close
-        }
-        */
     }
 
     @Override
