@@ -12,7 +12,7 @@ public class TechCentre extends TraineeCentre{
 
     TechCentre(){
         Random r = new Random();
-        course = TraineeCourse.values()[r.nextInt(TraineeCourse.values().length)];// TODO - assign course on creation.
+        course = TraineeCourse.values()[r.nextInt(TraineeCourse.values().length)];
         capacity = 200;
     }
 
