@@ -26,18 +26,19 @@ public class Clients {
     }
 
     public static Collection<Clients> createClients(){
-        Random rand = new Random();
-        int traineesWanted = rand.nextInt(15,30);
+        int traineesWanted = new Random().nextInt(15,30);
      return createClients(traineesWanted);
     }
 
     public static Collection<Clients> createClients(int assignedTrainees){
-        Collection<Clients> clientsCollection = new ArrayList<Clients>();
+        Random random = new Random();
+        int numberOfClients = random.nextInt(1,5);
+        Collection<Clients> clientsCollection = new ArrayList<Clients>(numberOfClients);
         TraineeCourse[] courses = TraineeCourse.values();
         for (int i = 0; i < clientsCollection.size(); i++) {
-            int selectEnum = new Random().nextInt(courses.length);
+            int selectEnum = random.nextInt(courses.length);
             clientsCollection.add(new Clients(assignedTrainees, courses[selectEnum]));
         }
-        return null;
+        return clientsCollection;
     }
 }
