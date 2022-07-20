@@ -26,7 +26,7 @@ public class SimulationContainer {
         return "Number of open centres: " + centres.size() +
                 "\nNumber of full centres: " + centres.stream().filter((c)->{return c.getAvailableSpots()<=0;}).count() +
                 "\nNumber of trainees currently training: " + countEnrolledStudents() +
-                "\nNumber of trainees on the waiting list: " + waitingStudents.size() +
+                "\nNumber of trainees on the waiting list: " + queueProvider.getAvailableCount() +
                 "\nNumber of trainees who have graduated: " + graduatedCount;
     }
 
