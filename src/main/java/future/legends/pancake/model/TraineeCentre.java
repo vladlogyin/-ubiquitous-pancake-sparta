@@ -37,6 +37,20 @@ public abstract class TraineeCentre {
         }
     }
 
+    void enrollTrainees(QueueProvider qp) {
+        // TODO "DRY-B-GONE"
+        Random r = new Random();
+        int amountToEnroll = r.nextInt(50) + 1;
+
+        int traineesAvailable = qp.getAvailableCount();
+        if(traineesAvailable<=0) return; // No one to enroll.
+        if(traineesAvailable < amountToEnroll) amountToEnroll = traineesAvailable; // qp smaller than amountToEnroll
+        if(amountToEnroll > getAvailableSpots()) amountToEnroll = getAvailableSpots(); // qp greater than availableSlots
+        for (int i = 0; i < amountToEnroll; i++) {
+            enrolledTrainees.add(qp.getTrainee());
+        }
+    }
+
     public int getAvailableSpots(){
         return capacity - getNumberOfEnrolledTrainees();
     }

@@ -37,6 +37,15 @@ public class Bootcamp extends TraineeCentre{
         return numberOfLowAttendanceMonths >= 3;
     }
 
+    void enrollTrainees(QueueProvider qp) {
+        // TODO "DRY-B-GONE
+        int traineesToEnroll = qp.getAvailableCount(); // get available trainees
+        if(traineesToEnroll<=0) return; // No one to enroll.
+        if(traineesToEnroll > getAvailableSpots()) traineesToEnroll = getAvailableSpots(); // qp greater than availableSlots
+        for (int i = 0; i < traineesToEnroll; i++) {
+            enrolledTrainees.add(qp.getTrainee());
+        }
+    }
     @Override
     void enrollTrainees(Queue<Trainee> waitingList) {
         // TODO maybe instead of accepting 1-50 random employees implement a method that
