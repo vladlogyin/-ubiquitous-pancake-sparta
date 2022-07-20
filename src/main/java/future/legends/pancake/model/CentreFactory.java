@@ -40,6 +40,8 @@ public class CentreFactory {
     }
     public void delete(TraineeCentre tr)
     {
+        if(tr==null)
+            return;
         var trClass = tr.getClass();
         if(availableCentres.containsKey(trClass))
         {
