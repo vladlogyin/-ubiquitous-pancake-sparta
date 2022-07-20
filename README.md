@@ -28,6 +28,10 @@ We used the following tools to manage our project:
 - __Microsoft Teams__ for communication and meetings.
 - __Code With Me (IntelliJ plugin)__ for collaborative work.
 
+Below is an image of our task board where we broke requirements down into small implementable tasks:
+
+![image](/images/TaskBoard.JPG)
+
 ## Project Setup & Use
 
 1. Clone the repository by following this [link](https://github.com/vladlogyin/ubiquitous-pancake-sparta.git), click the __Code__ button and copy the __URL__.
