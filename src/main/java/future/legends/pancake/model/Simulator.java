@@ -42,44 +42,62 @@ public class Simulator {
      */
     public void simulateMonth()
     {
-        try {
-            Thread.sleep(100); // tenth of a second per simulated month
-        } catch (InterruptedException e) {
-            // month took less than it should have taken to simulate - 100ms
-            System.err.println("Timing was corrupted for this simulation");
-            throw new RuntimeException(e);
+
+        // graduate trainees
+
+        graduateTrainees();
+
+        // open centres
+
+        if(monthsPassed%2==0 && monthsPassed>0){
+            simData.getCentres().add(simData.getCentreFactory().create());
         }
 
-        monthsPassed++;
-        everyMonthActivity();
-        if (monthsPassed > 0 && monthsPassed % 2 == 0 ) everyTwoMonthsActivity();
-        if (monthsPassed > 0 && monthsPassed % 3 == 0 ) everyThreeMonthsActivity();
-    }
-
-    private void everyMonthActivity() {
-        simData.getWaitingStudents().addAll(TraineeFactory.generateTrainees());
-        for(TraineeCentre tc : simData.getCentres())
-        {
-            if(simData.getWaitingStudents().size() == 0 ) break;
-            tc.enrollTrainees(simData.getWaitingStudents());
-        }
-        checkCentresForInactivity();
-    }
-    private void everyTwoMonthsActivity() {
-        simData.getCentres().add(CentreFactory.create());
-    }
-    private void everyThreeMonthsActivity() {
-
-    }
-    private void checkCentresForInactivity() {
+        // generate trainees
+        simData.getQueueProvider().addTrainees(TraineeFactory.generateTrainees(),false);
+        // run through each training centre to assign trainees or close the centre
         Iterator<TraineeCentre> i = simData.getCentres().iterator();
         while(i.hasNext())
         {
             var tc = i.next();
-            if(tc.getNumberOfEnrolledTrainees() < 25) {
+            boolean shouldCloseBefore = tc.shouldClose();
+            //assign trainees
+            tc.enrollTrainees(simData.getQueueProvider());
+            if(tc.shouldClose()) {
                 var traineesToBeMoved = tc.getEnrolledTrainees();
-                simData.moveTraineesFromClosedCentre(traineesToBeMoved);
+                // put trainees on pause
+                simData.getQueueProvider().addTrainees(traineesToBeMoved,true);
                 i.remove(); // close centre
+                simData.getCentreFactory().delete(tc);
+            }
+        }
+        // **training**
+        for(TraineeCentre tc : simData.getCentres())
+        {
+            for(Trainee tr : tc.getEnrolledTrainees())
+            {
+                tr.monthPassed(); // payslip
+            }
+        }
+
+        monthsPassed++;
+    }
+
+    private void graduateTrainees() {
+        for(TraineeCentre tc : simData.getCentres())
+        {
+
+            Iterator<Trainee> i = tc.getEnrolledTrainees().iterator();
+            while(i.hasNext())
+            {
+                var tr = i.next();
+                if(tr.hasGraduated())
+                {
+                    //TODO move trainee to a client or to the bench in phase 3
+                    i.remove(); // remove trainee from training centre
+                    simData.incrementGraduateCount();
+
+                }
             }
         }
     }
