@@ -1,6 +1,9 @@
 package future.legends.pancake.model;
 
+import org.apache.logging.log4j.core.util.KeyValuePair;
+
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Simulator {
@@ -187,16 +190,34 @@ public class Simulator {
 
     private void appendWaitingTrainees(StringBuilder str){
         str.append("\n>> Waiting for enroll.\n");
-        var waiting = simData.getQueueProvider().newTrainees.entrySet().stream()
-                .collect(Collectors.groupingBy(
-                        e -> e,
-                        Collectors.counting()
-                ));
+        var waiting = new HashMap<TraineeCourse, AtomicInteger>();//simData.getQueueProvider().newTrainees;
+        for(var kvp : simData.getQueueProvider().newTrainees.entrySet())
+        {
+            if(!waiting.containsKey(kvp.getKey()))
+            {
+                waiting.put(kvp.getKey(),new AtomicInteger(0));
+            }
+            waiting.get(kvp.getKey()).incrementAndGet();
+        }
+        for(var kvp : simData.getQueueProvider().pausedTrainees.entrySet())
+        {
+            if(!waiting.containsKey(kvp.getKey()))
+            {
+                waiting.put(kvp.getKey(),new AtomicInteger(0));
+            }
+            waiting.get(kvp.getKey()).incrementAndGet();
+        }
 
-        waiting.forEach((key, value) -> str.append(key.getKey()
-                        .getCourseName()).append(" : ")
-                .append(key.getValue().size()).append(" waiting").append("\n"));
-        // TODO add check to see if empty and append("None waiting");
+        for(var entry : waiting.entrySet()){
+
+            int aint = entry.getValue().get();
+            str.append(entry.getKey().getCourseName()).append(" : ");
+            if(aint>0) {
+                str.append(aint).append(" waiting\n");
+            }
+            else {
+                str.append("None waiting\n");
+            }
+        }
     }
-
 }
