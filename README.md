@@ -3,10 +3,10 @@
 ## Table of Contents
 * [Project Description](#project-description)
 * [Technology](#technology)
+* [Project Management](#project-management)
+* [Project Setup & Use](#project-setup--use)
 * [Project Phases](#project-phases)
-* [Setup](#setup)
-* [Usage](#usage)
-* [Features](#features)
+* [Results](#results)
 * [Testing](#testing)
 * [Contact](#contact)
 
@@ -21,6 +21,32 @@ A simulator which will help track the number of people currently training at Spa
 - __JUnit Jupiter__ [5.8.2](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api/5.8.2)
 - __Log4J__ [2.17.2](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core/2.17.2)
 
+## Project Management
+We used the following tools to manage our project:
+- __GitHub__ for version control.
+- __GitHub Projects__ for task management.
+- __Microsoft Teams__ for communication and meetings.
+- __Code With Me (IntelliJ plugin)__ for collaborative work.
+
+## Project Setup & Use
+
+1. Clone the repository by following this [link](https://github.com/vladlogyin/ubiquitous-pancake-sparta.git), click the __Code__ button and copy the __URL__.
+
+![image](/images/CloneRepo.jpg)
+
+2. Open IntelliJ IDEA and navigate to __File__ > __New__ > __Project from Version Control__.
+
+![image](/images/IntelliJNewProject.JPG)
+
+3. Paste the URL and choose where you want the project to be saved.
+
+![image](/images/PasteURL.JPG)
+
+4. Once the project is open make sure that all the dependencies have been downloaded, if unsure click the __Maven__ tab on the right hand bar and click __reload__.
+
+![image](/images/MavenDependencies.JPG)
+
+5. Run the application by navigating to (TODO)
 
 ## Project Phases
 
@@ -64,16 +90,7 @@ A simulator which will help track the number of people currently training at Spa
 - If a client does not collect enough trainees from the bench within a year, they will leave unhappy.
 - If a client does collect enough trainees from the bench within a year, they will leave happy and return the next year with the same requirement.
 
-## Setup
-
-Clone the [repository](https://github.com/vladlogyin/ubiquitous-pancake-sparta.git)
-```sh
-git clone https://github.com/vladlogyin/ubiquitous-pancake-sparta.git
-```
-
-## Usage
-
-## Features
+## Results
 
 ## Testing
 
