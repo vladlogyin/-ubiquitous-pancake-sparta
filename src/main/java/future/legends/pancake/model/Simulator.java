@@ -1,8 +1,7 @@
 package future.legends.pancake.model;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Simulator {
 
@@ -109,8 +108,95 @@ public class Simulator {
     }
 
     @Override
-    public String toString(){
-        return simData.toString();
+    public String toString() {
+        StringBuilder str = new StringBuilder(1000);
+
+        appendOpenCentres(str);
+        appendClosedCentres(str);
+        appendFullCentres(str);
+        appendCurrentlyTraining(str);
+        appendWaitingTrainees(str);
+        // TODO implement empty messages.
+        return str.toString();
+    }
+
+    private void appendOpenCentres(StringBuilder str){
+        str.append("\n>> Open Centers\n");
+        var openCenters = simData.getCentres().stream()
+                .collect(Collectors.groupingBy(e -> e.getClass().getSimpleName(),
+                        Collectors.counting()
+                ));
+        openCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" open centres.").append("\n"));
+        // TODO add check to see if empty and append("None open");
+    }
+
+    private void appendClosedCentres(StringBuilder str){
+        str.append("\n>> Closed Centres\n");
+        var closedCenters = simData.getClosedCentres().stream()
+                .collect(Collectors.groupingBy(e -> e.getClass().getSimpleName(),
+                        Collectors.counting()
+                ));
+        closedCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" closed centres.").append("\n"));
+        // TODO add check to see if empty and append("None closed");
+    }
+
+    private void appendFullCentres(StringBuilder str){
+        str.append("\n>> Full Centres\n");
+        HashMap<String,Integer> fullCenters = new HashMap<>();
+
+        for (var s : simData.getCentres()){
+            var name = s.getClass().getSimpleName();
+            if(s.getAvailableSpots() == 0) {
+                if(fullCenters.containsKey(name)){
+                    fullCenters.put(name, fullCenters.get(name) + 1);
+                } else fullCenters.put(name, 1);
+            }
+        }
+
+        if(fullCenters.isEmpty()){
+            str.append("No full centres.\n");
+            return;
+        }
+
+        for (var trainingCount : fullCenters.entrySet()) {
+            str.append(trainingCount.getKey()).append(" : ").append(trainingCount.getValue()).append("\n");
+        }
+    }
+
+    private void appendCurrentlyTraining(StringBuilder str){
+        str.append("\n>> Currently Training\n");
+        HashMap<String,Integer> trainingMap = new HashMap<>();
+
+        for (var s : simData.getCentres()){
+            var name = s.getClass().getSimpleName();
+            var cohortSize = s.enrolledTrainees.size();
+            if(trainingMap.containsKey(name)){
+                trainingMap.put(name, trainingMap.get(name) + cohortSize);
+            } else trainingMap.put(name, cohortSize);
+        }
+
+        if(trainingMap.isEmpty()){
+            str.append("None training.\n");
+            return;
+        }
+
+        for (var trainingCount : trainingMap.entrySet()) {
+            str.append(trainingCount.getKey()).append(" : ").append(trainingCount.getValue()).append("\n");
+        }
+    }
+
+    private void appendWaitingTrainees(StringBuilder str){
+        str.append("\n>> Waiting for enroll.\n");
+        var waiting = simData.getQueueProvider().newTrainees.entrySet().stream()
+                .collect(Collectors.groupingBy(
+                        e -> e,
+                        Collectors.counting()
+                ));
+
+        waiting.forEach((key, value) -> str.append(key.getKey()
+                        .getCourseName()).append(" : ")
+                .append(key.getValue().size()).append(" waiting").append("\n"));
+        // TODO add check to see if empty and append("None waiting");
     }
 
 }
