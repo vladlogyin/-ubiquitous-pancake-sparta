@@ -21,8 +21,4 @@ public class TechCentre extends TraineeCentre{
         monthsAlive++;
     }
 
-    @Override
-    boolean shouldClose() {
-        return false;
-    }
 }

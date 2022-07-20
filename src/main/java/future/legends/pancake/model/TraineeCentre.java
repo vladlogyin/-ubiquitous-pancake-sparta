@@ -15,7 +15,10 @@ public abstract class TraineeCentre {
         return enrolledTrainees;
     }
     abstract void monthPassed();
-    abstract boolean shouldClose();
+    boolean shouldClose()
+    {
+        return enrolledTrainees.size()<25;
+    }
 
     void enrollTrainees(Queue<Trainee> waitingList){
         Random r = new Random();

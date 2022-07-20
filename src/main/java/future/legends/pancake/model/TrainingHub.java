@@ -22,8 +22,4 @@ public class TrainingHub extends TraineeCentre{
         monthsAlive++;
     }
 
-    @Override
-    boolean shouldClose() {
-        return false;
-    }
 }
