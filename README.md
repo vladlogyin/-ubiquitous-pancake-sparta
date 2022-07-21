@@ -96,7 +96,9 @@ Below is an image of our task board where we broke requirements down into small 
 
 ## Implementation
 
-To meet the requirements of the application, its various constituent parts were made into objects. Namely, these are: Trainees, Clients and Training Centres. These objects contain attributes to describe their behaviours and distinguish them from objects of the same type. One such attribute is the course type, which was created as an enum in ```TraineeCourse.java```. This attribute in particular is key part of the application since it is not only used to describe the Trainee. It is also used for defining the type of trainees a client wants as well as defining what type of trainee a particular training centre will take. These objects also have factory methods so they can be created in accordance with  
+To meet the requirements of the application, its various constituent parts were made into objects. Namely, these are: Trainees, Clients and Training Centres. These objects contain attributes to describe their behaviours and distinguish them from objects of the same type. One such attribute is the course type, which was created as an enum in ```TraineeCourse.java```. This attribute in particular is key part of the application since it is not only used to describe the Trainee. It is also used for defining the type of trainees a client wants as well as defining what type of trainee a particular training centre will take. These objects also have factory methods so they can be created in accordance with the requirements.
+
+Trainee objects are generated in collections which contain a random number of trainees between 50 and 100 at each call of the ```generateTrainees()``` method. Each trainee in the collection is assigned a course type at random using the enum class ```TraineeCourse.java```. 
 
 ## Results
 
