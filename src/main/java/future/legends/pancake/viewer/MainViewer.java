@@ -30,6 +30,7 @@ public class MainViewer {
             catch(InputMismatchException e){
                 System.out.println("\nInvalid Input: Please enter a positive integer that is greater than 0\n");
                 scanner.nextLine();
+                Logger.error("User entered an invalid value for months to simulate");
             }
         }
 
@@ -61,6 +62,7 @@ public class MainViewer {
             catch(InputMismatchException e){
                 System.out.println("\nInvalid input: Please enter 1 or 2\n");
                 scanner.nextLine();
+                Logger.error("User entered an invalid value for simulation report frequency");
             }
 
         }

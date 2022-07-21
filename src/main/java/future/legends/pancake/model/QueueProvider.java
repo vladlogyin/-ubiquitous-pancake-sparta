@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.*;
 
 public class QueueProvider {
@@ -82,6 +84,7 @@ public class QueueProvider {
         }
         catch (NullPointerException e)
         {
+            Logger.error("Paused trainee queue and new trainee queue are both empty " + e.getMessage());
             throw new NoSuchElementException(e);
         }
     }
