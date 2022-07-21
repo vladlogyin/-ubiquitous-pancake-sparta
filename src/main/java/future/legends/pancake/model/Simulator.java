@@ -1,8 +1,10 @@
 package future.legends.pancake.model;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Random;
+import org.apache.logging.log4j.core.util.KeyValuePair;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class Simulator {
 
@@ -42,44 +44,63 @@ public class Simulator {
      */
     public void simulateMonth()
     {
-        try {
-            Thread.sleep(100); // tenth of a second per simulated month
-        } catch (InterruptedException e) {
-            // month took less than it should have taken to simulate - 100ms
-            System.err.println("Timing was corrupted for this simulation");
-            throw new RuntimeException(e);
+
+        // graduate trainees
+
+        graduateTrainees();
+
+        // open centres
+
+        if(monthsPassed%2==0 && monthsPassed>0){
+            simData.getCentres().add(simData.getCentreFactory().create());
         }
 
-        monthsPassed++;
-        everyMonthActivity();
-        if (monthsPassed > 0 && monthsPassed % 2 == 0 ) everyTwoMonthsActivity();
-        if (monthsPassed > 0 && monthsPassed % 3 == 0 ) everyThreeMonthsActivity();
-    }
-
-    private void everyMonthActivity() {
-        simData.getWaitingStudents().addAll(TraineeFactory.generateTrainees());
-        for(TraineeCentre tc : simData.getCentres())
-        {
-            if(simData.getWaitingStudents().size() == 0 ) break;
-            tc.enrollTrainees(simData.getWaitingStudents());
-        }
-        checkCentresForInactivity();
-    }
-    private void everyTwoMonthsActivity() {
-        simData.getCentres().add(CentreFactory.create());
-    }
-    private void everyThreeMonthsActivity() {
-
-    }
-    private void checkCentresForInactivity() {
+        // generate trainees
+        simData.getQueueProvider().addTrainees(TraineeFactory.generateTrainees(),false);
+        // run through each training centre to assign trainees or close the centre
         Iterator<TraineeCentre> i = simData.getCentres().iterator();
         while(i.hasNext())
         {
             var tc = i.next();
-            if(tc.getNumberOfEnrolledTrainees() < 25) {
+            boolean shouldCloseBefore = tc.shouldClose();
+            //assign trainees
+            tc.enrollTrainees(simData.getQueueProvider());
+            if(tc.shouldClose()) {
                 var traineesToBeMoved = tc.getEnrolledTrainees();
-                simData.moveTraineesFromClosedCentre(traineesToBeMoved);
+                // put trainees on pause
+                simData.getQueueProvider().addTrainees(traineesToBeMoved,true);
                 i.remove(); // close centre
+                simData.getCentreFactory().delete(tc);
+                simData.getClosedCentres().add(tc); // keep track of closed centres
+            }
+        }
+        // **training**
+        for(TraineeCentre tc : simData.getCentres())
+        {
+            for(Trainee tr : tc.getEnrolledTrainees())
+            {
+                tr.monthPassed(); // payslip
+            }
+        }
+
+        monthsPassed++;
+    }
+
+    private void graduateTrainees() {
+        for(TraineeCentre tc : simData.getCentres())
+        {
+
+            Iterator<Trainee> i = tc.getEnrolledTrainees().iterator();
+            while(i.hasNext())
+            {
+                var tr = i.next();
+                if(tr.hasGraduated())
+                {
+                    //TODO move trainee to a client or to the bench in phase 3
+                    i.remove(); // remove trainee from training centre
+                    simData.incrementGraduateCount();
+
+                }
             }
         }
     }
@@ -90,8 +111,113 @@ public class Simulator {
     }
 
     @Override
-    public String toString(){
-        return simData.toString();
+    public String toString() {
+        StringBuilder str = new StringBuilder(1000);
+
+        appendOpenCentres(str);
+        appendClosedCentres(str);
+        appendFullCentres(str);
+        appendCurrentlyTraining(str);
+        appendWaitingTrainees(str);
+        // TODO implement empty messages.
+        return str.toString();
     }
 
+    private void appendOpenCentres(StringBuilder str){
+        str.append("\n>> Open Centers\n");
+        var openCenters = simData.getCentres().stream()
+                .collect(Collectors.groupingBy(e -> e.getClass().getSimpleName(),
+                        Collectors.counting()
+                ));
+        openCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" open centres.").append("\n"));
+        // TODO add check to see if empty and append("None open");
+    }
+
+    private void appendClosedCentres(StringBuilder str){
+        str.append("\n>> Closed Centres\n");
+        var closedCenters = simData.getClosedCentres().stream()
+                .collect(Collectors.groupingBy(e -> e.getClass().getSimpleName(),
+                        Collectors.counting()
+                ));
+        closedCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" closed centres.").append("\n"));
+        // TODO add check to see if empty and append("None closed");
+    }
+
+    private void appendFullCentres(StringBuilder str){
+        str.append("\n>> Full Centres\n");
+        HashMap<String,Integer> fullCenters = new HashMap<>();
+
+        for (var s : simData.getCentres()){
+            var name = s.getClass().getSimpleName();
+            if(s.getAvailableSpots() == 0) {
+                if(fullCenters.containsKey(name)){
+                    fullCenters.put(name, fullCenters.get(name) + 1);
+                } else fullCenters.put(name, 1);
+            }
+        }
+
+        if(fullCenters.isEmpty()){
+            str.append("No full centres.\n");
+            return;
+        }
+
+        for (var trainingCount : fullCenters.entrySet()) {
+            str.append(trainingCount.getKey()).append(" : ").append(trainingCount.getValue()).append("\n");
+        }
+    }
+
+    private void appendCurrentlyTraining(StringBuilder str){
+        str.append("\n>> Currently Training\n");
+        HashMap<String,Integer> trainingMap = new HashMap<>();
+
+        for (var s : simData.getCentres()){
+            var name = s.getClass().getSimpleName();
+            var cohortSize = s.enrolledTrainees.size();
+            if(trainingMap.containsKey(name)){
+                trainingMap.put(name, trainingMap.get(name) + cohortSize);
+            } else trainingMap.put(name, cohortSize);
+        }
+
+        if(trainingMap.isEmpty()){
+            str.append("None training.\n");
+            return;
+        }
+
+        for (var trainingCount : trainingMap.entrySet()) {
+            str.append(trainingCount.getKey()).append(" : ").append(trainingCount.getValue()).append("\n");
+        }
+    }
+
+    private void appendWaitingTrainees(StringBuilder str){
+        str.append("\n>> Waiting for enroll.\n");
+        var waiting = new HashMap<TraineeCourse, AtomicInteger>();//simData.getQueueProvider().newTrainees;
+        for(var kvp : simData.getQueueProvider().newTrainees.entrySet())
+        {
+            if(!waiting.containsKey(kvp.getKey()))
+            {
+                waiting.put(kvp.getKey(),new AtomicInteger(0));
+            }
+            waiting.get(kvp.getKey()).incrementAndGet();
+        }
+        for(var kvp : simData.getQueueProvider().pausedTrainees.entrySet())
+        {
+            if(!waiting.containsKey(kvp.getKey()))
+            {
+                waiting.put(kvp.getKey(),new AtomicInteger(0));
+            }
+            waiting.get(kvp.getKey()).incrementAndGet();
+        }
+
+        for(var entry : waiting.entrySet()){
+
+            int aint = entry.getValue().get();
+            str.append(entry.getKey().getCourseName()).append(" : ");
+            if(aint>0) {
+                str.append(aint).append(" waiting\n");
+            }
+            else {
+                str.append("None waiting\n");
+            }
+        }
+    }
 }

@@ -5,8 +5,11 @@ import java.util.stream.Stream;
 
 public class SimulationContainer {
 
+    private int graduatedCount=0;
+
     private Deque<Trainee> waitingStudents;
     private List<TraineeCentre> centres;
+    private List<TraineeCentre> closedCentres;
 
     private CentreFactory centreFactory;
     private QueueProvider queueProvider;
@@ -14,6 +17,7 @@ public class SimulationContainer {
     public SimulationContainer() {
         waitingStudents = new LinkedList<>();
         centres = new ArrayList<TraineeCentre>();
+        closedCentres = new ArrayList<TraineeCentre>();
         queueProvider = new QueueProvider();
         centreFactory = new CentreFactory();
     }
@@ -24,7 +28,8 @@ public class SimulationContainer {
         return "Number of open centres: " + centres.size() +
                 "\nNumber of full centres: " + centres.stream().filter((c)->{return c.getAvailableSpots()<=0;}).count() +
                 "\nNumber of trainees currently training: " + countEnrolledStudents() +
-                "\nNumber of trainees on the waiting list: " + waitingStudents.size();
+                "\nNumber of trainees on the waiting list: " + queueProvider.getAvailableCount() +
+                "\nNumber of trainees who have graduated: " + graduatedCount;
     }
 
     public List<Trainee> generateEnrolledStudents() {
@@ -55,8 +60,22 @@ public class SimulationContainer {
         }
     }
 
+    public void incrementGraduateCount()
+    {
+        graduatedCount++;
+    }
+
+    public int getGraduateCount()
+    {
+        return graduatedCount;
+    }
+
     public List<TraineeCentre> getCentres() {
         return centres;
+    }
+
+    public List<TraineeCentre> getClosedCentres() {
+        return closedCentres;
     }
 
     public QueueProvider getQueueProvider()

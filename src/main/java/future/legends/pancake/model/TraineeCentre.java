@@ -4,6 +4,7 @@ import java.util.*;
 
 public abstract class TraineeCentre {
     int capacity;
+    int monthsAlive;
     Collection<Trainee> enrolledTrainees = new ArrayList<>();
 
     public int getNumberOfEnrolledTrainees(){
@@ -12,6 +13,11 @@ public abstract class TraineeCentre {
 
     public Collection<Trainee> getEnrolledTrainees(){
         return enrolledTrainees;
+    }
+    abstract void monthPassed();
+    boolean shouldClose()
+    {
+        return enrolledTrainees.size()<25;
     }
 
     void enrollTrainees(Queue<Trainee> waitingList){
@@ -28,6 +34,20 @@ public abstract class TraineeCentre {
     protected void enrollTrainees(Queue<Trainee> waitingList, int toEnroll){
         for (int i = 0; i < toEnroll; i++) {
             enrolledTrainees.add(waitingList.remove());
+        }
+    }
+
+    void enrollTrainees(QueueProvider qp) {
+        // TODO "DRY-B-GONE"
+        Random r = new Random();
+        int amountToEnroll = r.nextInt(50) + 1;
+
+        int traineesAvailable = qp.getAvailableCount();
+        if(traineesAvailable<=0) return; // No one to enroll.
+        if(traineesAvailable < amountToEnroll) amountToEnroll = traineesAvailable; // qp smaller than amountToEnroll
+        if(amountToEnroll > getAvailableSpots()) amountToEnroll = getAvailableSpots(); // qp greater than availableSlots
+        for (int i = 0; i < amountToEnroll; i++) {
+            enrolledTrainees.add(qp.getTrainee());
         }
     }
 
