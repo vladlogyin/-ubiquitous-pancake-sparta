@@ -122,11 +122,13 @@ public class Simulator {
             if(c.isSatisfied())
             {
                 c.resetClient();
+                Logger.info("A client has become happy after having their requirement met");
             }
             else
             {
                 i.remove();
                 simData.incrementUnhappyClientCount();
+                Logger.warn("A client has become unhappy after not having their requirement met");
             }
         }
         // Create a new client
@@ -151,7 +153,12 @@ public class Simulator {
 
                 }
             }
-            Logger.info((simData.getGraduateCount() - preGraduationCount) + " trainees graduated " + tc.getClass().getSimpleName());
+            if (simData.getGraduateCount() - preGraduationCount == 0){
+                Logger.warn("No employees graduated this month from " + tc.getClass().getSimpleName());
+            }
+            else{
+                Logger.info((simData.getGraduateCount() - preGraduationCount) + " trainees graduated " + tc.getClass().getSimpleName());
+            }
         }
     }
 
