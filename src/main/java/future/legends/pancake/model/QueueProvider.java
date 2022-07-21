@@ -7,17 +7,21 @@ public class QueueProvider {
 
     Map<TraineeCourse, Queue<Trainee>> newTrainees;
 
+    Map<TraineeCourse, Queue<Trainee>> benchTrainees;
+
     public QueueProvider()
     {
         pausedTrainees = new HashMap<>();
         newTrainees = new HashMap<>();
+        benchTrainees = new HashMap<>();
         for(TraineeCourse tc : TraineeCourse.values())
         {
             pausedTrainees.put(tc,new LinkedList<>());
             newTrainees.put(tc,new LinkedList<>());
+            benchTrainees.put(tc,new LinkedList<>());
         }
     }
-
+    @Deprecated
     public void addTrainees(Collection<Trainee> trainees, boolean arePaused)
     {
         if(trainees ==null)
@@ -25,6 +29,23 @@ public class QueueProvider {
             return; //TODO log this
         }
         Map<TraineeCourse, Queue<Trainee>> traineeQueue = arePaused?pausedTrainees:newTrainees;
+        for(Trainee tr : trainees)
+        {
+            addTrainee(traineeQueue,tr);
+        }
+    }
+    public void addTrainees(Collection<Trainee> trainees, TraineeState tstate)
+    {
+        if(trainees ==null || tstate==null)
+        {
+            return; //TODO log this
+        }
+        Map<TraineeCourse, Queue<Trainee>> traineeQueue = switch(tstate)
+        {
+            case NEW -> newTrainees;
+            case PAUSED -> pausedTrainees;
+            case BENCHED -> benchTrainees;
+        };
         for(Trainee tr : trainees)
         {
             addTrainee(traineeQueue,tr);
@@ -68,6 +89,17 @@ public class QueueProvider {
         return getTraineeFromMap(newTrainees);
     }
 
+    public Trainee getBenchedTrainee(TraineeCourse tc) throws NoSuchElementException
+    {
+        try { // FIXME <Queue>.remove() --> The method throws an NoSuchElementException when the Queue is empty.
+            return benchTrainees.get(tc).remove();
+        }
+        catch (NullPointerException e)
+        {
+            throw new NoSuchElementException(e);
+        }
+    }
+
     private Trainee getTraineeFromMap(Map<TraineeCourse, Queue<Trainee>> queueMap) {
             for(Queue<Trainee> qt : queueMap.values())
             {
@@ -75,6 +107,20 @@ public class QueueProvider {
                     return qt.remove();
             }
             throw new NoSuchElementException("No trainees were found in the queue");
+    }
+
+    public int getAvailableBenchedCount()
+    {
+        int count = 0;
+        for(TraineeCourse tc : TraineeCourse.values())
+        {
+            count += getAvailableBenchedCount(tc);
+        }
+        return count;
+    }
+    public int getAvailableBenchedCount(TraineeCourse tc)
+    {
+        return getAvailableCountHelper(tc, benchTrainees);
     }
 
     /**
