@@ -102,8 +102,18 @@ public class QueueProvider {
         }
         return count;
     }
-    public int getAvailableCount(TraineeCourse tc)
+    public int getAvailableTraineeCount(TraineeCourse tc)
     {
-        return pausedTrainees.get(tc).size()+newTrainees.get(tc).size();
+        return getAvailableCountHelper(tc,newTrainees,pausedTrainees);
+    }
+    @SafeVarargs
+    private int getAvailableCountHelper(TraineeCourse tc, Map<TraineeCourse, Queue<Trainee>>... queueMaps)
+    {
+        int count=0;
+        for(Map<TraineeCourse, Queue<Trainee>> queue : queueMaps)
+        {
+            count+=queue.get(tc).size();
+        }
+        return count;
     }
 }
