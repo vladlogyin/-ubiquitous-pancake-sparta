@@ -28,7 +28,8 @@ public class QueueProvider {
     {
         if(trainees ==null)
         {
-            return; //TODO log this
+            Logger.warn("Null pointer provided for QueueProvider addTrainees(), but issue handled");
+            return;
         }
         Map<TraineeCourse, Queue<Trainee>> traineeQueue = arePaused?pausedTrainees:newTrainees;
         for(Trainee tr : trainees)
@@ -40,7 +41,10 @@ public class QueueProvider {
     {
         if(trainees ==null || tstate==null)
         {
-            return; //TODO log this
+            Logger.warn("Null pointer provided for QueueProvider" +
+                    " addTrainees(Collection<Trainee> trainees, TraineeState tstate)," +
+                    " but issue handled");
+            return;
         }
         Map<TraineeCourse, Queue<Trainee>> traineeQueue = switch(tstate)
         {
@@ -58,7 +62,10 @@ public class QueueProvider {
     {
         if(tr ==null)
         {
-            return; //TODO log this
+            Logger.warn("Null pointer provided for QueueProvider" +
+                    " addTrainee(Map<TraineeCourse, Queue<Trainee>> queueMap, Trainee tr)," +
+                    " but issue handled");
+            return;
         }
         queueMap.get(tr.getCourseType()).add(tr);
     }
