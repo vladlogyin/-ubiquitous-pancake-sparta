@@ -33,4 +33,9 @@ public class Trainee {
         return monthsPassed>MONTHS_GRADUATION;
     }
 
+    public int getMonthsBenched()
+    {
+        return hasGraduated()?(monthsPassed-MONTHS_GRADUATION):0;
+    }
+
 }
