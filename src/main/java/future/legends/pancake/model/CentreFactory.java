@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.awt.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,6 +37,7 @@ public class CentreFactory {
                 }
             } catch (Exception e) {
                 new RuntimeException(e);
+                Logger.error("Available centres map is empty" + e.getMessage());
             }
         }
     }
