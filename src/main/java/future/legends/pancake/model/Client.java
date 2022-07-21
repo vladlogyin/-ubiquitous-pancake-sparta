@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.*;
 
 public class Client {
@@ -44,6 +46,7 @@ public class Client {
             for (int i = 0; i < numberOfTrainees; i++) {
                 this.assignedTrainees.add(qp.getBenchedTrainee(getTraineeType()));
             }
+            Logger.info("A " + getTraineeType().toString() + " client took " + numberOfTrainees + " trainees");
         }
     }
 

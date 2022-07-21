@@ -151,7 +151,12 @@ public class Simulator {
 
                 }
             }
-            Logger.info((simData.getGraduateCount() - preGraduationCount) + " trainees graduated " + tc.getClass().getSimpleName());
+            if (simData.getGraduateCount() - preGraduationCount == 0){
+                Logger.warn("No employees graduated this month from " + tc.getClass().getSimpleName());
+            }
+            else{
+                Logger.info((simData.getGraduateCount() - preGraduationCount) + " trainees graduated " + tc.getClass().getSimpleName());
+            }
         }
     }
 
