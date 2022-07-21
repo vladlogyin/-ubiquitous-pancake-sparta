@@ -13,10 +13,6 @@ public class Trainee {
         monthsPassed=0;
     }
 
-    public Trainee() {
-
-    }
-
     public TraineeCourse getCourseType() {
         return courseType;
     }
