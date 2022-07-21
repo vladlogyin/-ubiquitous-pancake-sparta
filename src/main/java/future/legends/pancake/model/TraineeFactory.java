@@ -10,10 +10,10 @@ public class TraineeFactory {
         return generateTrainees(newTrainees);
     }
 
-    public static Collection <Trainee> generateTrainees(int numOfTrainees) {
+    private static Collection <Trainee> generateTrainees(int numOfTrainees) {
         Collection<Trainee> traineeCollection = new ArrayList<Trainee>(numOfTrainees);
+        TraineeCourse[] courses = TraineeCourse.values();
         for (int i = 0; i < numOfTrainees; i++) {
-            TraineeCourse[] courses = TraineeCourse.values();
             int selectEnum = new Random().nextInt(courses.length);
             traineeCollection.add(new Trainee(courses[selectEnum]));
         }
