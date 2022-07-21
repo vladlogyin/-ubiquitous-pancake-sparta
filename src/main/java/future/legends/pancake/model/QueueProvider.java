@@ -139,6 +139,7 @@ public class QueueProvider {
         }
         catch (NullPointerException e)
         {
+            Logger.error("Paused trainee queue and new trainee queue are both empty " + e.getMessage());
             throw new NoSuchElementException(e);
         }
     }
