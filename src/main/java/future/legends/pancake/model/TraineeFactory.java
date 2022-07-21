@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.*;
 
 public class TraineeFactory {
@@ -17,6 +19,7 @@ public class TraineeFactory {
             int selectEnum = new Random().nextInt(courses.length);
             traineeCollection.add(new Trainee(courses[selectEnum]));
         }
+        Logger.info("Generated " + numOfTrainees + " new trainees");
         return traineeCollection;
     }
 
