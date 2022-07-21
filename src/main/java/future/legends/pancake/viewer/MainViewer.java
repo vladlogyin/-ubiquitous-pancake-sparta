@@ -1,5 +1,7 @@
 package future.legends.pancake.viewer;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -31,6 +33,7 @@ public class MainViewer {
             }
         }
 
+        Logger.info("User selected a " + months + " month simulation");
         return months;
 
     }
@@ -72,6 +75,7 @@ public class MainViewer {
 
     public void displaySimulationReport(String simulationReport){
         System.out.println(simulationReport);
+        Logger.info("Displayed simulation report");
     }
 
 }

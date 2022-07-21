@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.Random;
 
 public class TechCentre extends TraineeCentre{
@@ -28,6 +30,7 @@ public class TechCentre extends TraineeCentre{
         for (int i = 0; i < amountToEnroll; i++) {
             enrolledTrainees.add(qp.getTrainee(course));
         }
+        Logger.info(amountToEnroll + " trainees enrolled at TechCentre");
     }
 
     @Override
