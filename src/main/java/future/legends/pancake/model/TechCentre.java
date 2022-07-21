@@ -21,7 +21,7 @@ public class TechCentre extends TraineeCentre{
         Random r = new Random();
         int amountToEnroll = r.nextInt(50) + 1;
 
-        int traineesAvailable = qp.getAvailableCount(course);
+        int traineesAvailable = qp.getAvailableTraineeCount(course);
         if(traineesAvailable<=0) return; // No one to enroll.
         if(traineesAvailable < amountToEnroll) amountToEnroll = traineesAvailable; // qp smaller than amountToEnroll
         if(amountToEnroll > getAvailableSpots()) amountToEnroll = getAvailableSpots(); // qp greater than availableSlots

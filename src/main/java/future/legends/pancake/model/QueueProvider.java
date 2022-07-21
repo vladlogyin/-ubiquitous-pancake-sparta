@@ -139,12 +139,12 @@ public class QueueProvider {
             throw new NoSuchElementException(e);
         }
     }
-    public int getAvailableCount()
+    public int getAvailableTraineeCount()
     {
         int count = 0;
         for(TraineeCourse tc : TraineeCourse.values())
         {
-            count += getAvailableCount(tc);
+            count += getAvailableTraineeCount(tc);
         }
         return count;
     }

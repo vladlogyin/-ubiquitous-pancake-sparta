@@ -32,7 +32,7 @@ public class Bootcamp extends TraineeCentre{
 
     void enrollTrainees(QueueProvider qp) {
         // TODO "DRY-B-GONE
-        int traineesToEnroll = qp.getAvailableCount(); // get available trainees
+        int traineesToEnroll = qp.getAvailableTraineeCount(); // get available trainees
         if(traineesToEnroll<=0) return; // No one to enroll.
         if(traineesToEnroll > getAvailableSpots()) traineesToEnroll = getAvailableSpots(); // qp greater than availableSlots
         for (int i = 0; i < traineesToEnroll; i++) {
