@@ -6,18 +6,17 @@ import future.legends.pancake.model.TraineeCentre;
 import future.legends.pancake.model.TraineeCourse;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class SimulatorView {
 
     private static SimulationContainer simData;
-    private static Set<Map.Entry<TraineeCourse, Queue<Trainee>>> pausedTrainees;
-    private static Set<Map.Entry<TraineeCourse, Queue<Trainee>>> newTrainees;
+    private static Map<TraineeCourse, Queue<Trainee>> pausedTrainees;
+    private static Map<TraineeCourse, Queue<Trainee>> newTrainees;
 
     public static String getReport(SimulationContainer sim,
-                                   Set<Map.Entry<TraineeCourse, Queue<Trainee>>> pausedTrainees,
-                                   Set<Map.Entry<TraineeCourse, Queue<Trainee>>> newTrainees)
+                                   Map<TraineeCourse, Queue<Trainee>> pausedTrainees,
+                                   Map<TraineeCourse, Queue<Trainee>> newTrainees)
     {
         if(sim == null) return "Unable to load simulation data!";
         SimulatorView.simData = sim;
@@ -30,18 +29,14 @@ public class SimulatorView {
         appendClosedCentres(stringBuilder);
         appendFullCentres(stringBuilder);
         appendCurrentlyTraining(stringBuilder);
-        //appendTraineeCourseDetails(stringBuilder);
+        appendWaitingTrainees(stringBuilder);
+        appendGraduatedTrainees(stringBuilder);
 
         return stringBuilder.toString();
     }
 
-    private static void appendTraineeCourseDetails(StringBuilder stringBuilder) {
-        HashMap<TraineeCourse,Integer> courseTrainees = new HashMap<>();
-        for (var tc: simData.getCentres())
-        {
-            getIndividualCourseDetails(stringBuilder, tc);
-        }
-        stringBuilder.append(Arrays.toString(new Set[]{courseTrainees.entrySet()}));
+    private static void appendGraduatedTrainees(StringBuilder stringBuilder){
+        stringBuilder.append("\n").append(simData.getGraduateCount()).append(" Spartans have graduated!");
     }
 
     private static void getIndividualCourseDetails(StringBuilder stringBuilder, TraineeCentre tc){
@@ -68,8 +63,11 @@ public class SimulatorView {
                 .collect(Collectors.groupingBy(e -> e.getClass().getSimpleName(),
                         Collectors.counting()
                 ));
+        if(openCenters.isEmpty()){
+            str.append("None open.\n");
+            return;
+        }
         openCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" open centres.").append("\n"));
-        // TODO add check to see if empty and append("None open");
     }
 
     private static void appendClosedCentres(StringBuilder str){
@@ -78,8 +76,12 @@ public class SimulatorView {
                 .collect(Collectors.groupingBy(e -> e.getClass().getSimpleName(),
                         Collectors.counting()
                 ));
+        if(closedCenters.isEmpty()){
+            str.append("None closed.\n");
+            return;
+        }
         closedCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" closed centres.").append("\n"));
-        // TODO add check to see if empty and append("None closed");
+
     }
 
     private static void appendFullCentres(StringBuilder str){
@@ -129,35 +131,37 @@ public class SimulatorView {
         }
     }
 
-    private static void appendWaitingTrainees(StringBuilder str){
-        str.append("\n>> Waiting for enroll.\n");
-        var waiting = new HashMap<TraineeCourse, AtomicInteger>();//simData.getQueueProvider().newTrainees;
-        for(var kvp : newTrainees)
-        {
-            if(!waiting.containsKey(kvp.getKey()))
-            {
-                waiting.put(kvp.getKey(),new AtomicInteger(0));
-            }
-            waiting.get(kvp.getKey()).incrementAndGet();
-        }
-        for(var kvp : pausedTrainees)
-        {
-            if(!waiting.containsKey(kvp.getKey()))
-            {
-                waiting.put(kvp.getKey(),new AtomicInteger(0));
-            }
-            waiting.get(kvp.getKey()).incrementAndGet();
+    private static void appendWaitingTrainees(StringBuilder stringBuilder){
+        stringBuilder.append("\n>> Waiting for enroll.\n");
+        HashMap<TraineeCourse, Integer> traineeCourses = new HashMap<>();
+        for (var entry : pausedTrainees.entrySet()) {
+            countWaiting(stringBuilder, entry.getValue(), traineeCourses);
         }
 
-        for(var entry : waiting.entrySet()){
+        for (var entry : newTrainees.entrySet()) {
+            countWaiting(stringBuilder, entry.getValue(), traineeCourses);
+        }
 
-            int aint = entry.getValue().get();
-            str.append(entry.getKey().getCourseName()).append(" : ");
-            if(aint>0) {
-                str.append(aint).append(" waiting\n");
+        if(traineeCourses.isEmpty()){
+            stringBuilder.append("None waiting.\n");
+            return;
+        }
+
+        for (var courseDetail : traineeCourses.entrySet()) {
+            stringBuilder.append(courseDetail.getValue().intValue()).append(" : ")
+                    .append(courseDetail.getKey().getCourseName()).append(" waiting.\n");
+        }
+    }
+
+    private static void countWaiting(StringBuilder stringBuilder, Queue<Trainee> queue, HashMap<TraineeCourse, Integer> counts){
+        for (var trainee: queue) {
+            if(!counts.containsKey(trainee.getCourseType()))
+            {
+                counts.put(trainee.getCourseType(), 1);
             }
-            else {
-                str.append("None waiting\n");
+            else
+            {
+                counts.put(trainee.getCourseType(), counts.get(trainee.getCourseType()) + 1);
             }
         }
     }

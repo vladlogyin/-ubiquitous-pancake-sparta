@@ -1,5 +1,6 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.viewer.SimulatorView;
 import org.apache.logging.log4j.core.util.KeyValuePair;
 
 import java.util.*;
@@ -112,112 +113,8 @@ public class Simulator {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder(1000);
-
-        appendOpenCentres(str);
-        appendClosedCentres(str);
-        appendFullCentres(str);
-        appendCurrentlyTraining(str);
-        appendWaitingTrainees(str);
-        // TODO implement empty messages.
-        return str.toString();
-    }
-
-    private void appendOpenCentres(StringBuilder str){
-        str.append("\n>> Open Centers\n");
-        var openCenters = simData.getCentres().stream()
-                .collect(Collectors.groupingBy(e -> e.getClass().getSimpleName(),
-                        Collectors.counting()
-                ));
-        openCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" open centres.").append("\n"));
-        // TODO add check to see if empty and append("None open");
-    }
-
-    private void appendClosedCentres(StringBuilder str){
-        str.append("\n>> Closed Centres\n");
-        var closedCenters = simData.getClosedCentres().stream()
-                .collect(Collectors.groupingBy(e -> e.getClass().getSimpleName(),
-                        Collectors.counting()
-                ));
-        closedCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" closed centres.").append("\n"));
-        // TODO add check to see if empty and append("None closed");
-    }
-
-    private void appendFullCentres(StringBuilder str){
-        str.append("\n>> Full Centres\n");
-        HashMap<String,Integer> fullCenters = new HashMap<>();
-
-        for (var s : simData.getCentres()){
-            var name = s.getClass().getSimpleName();
-            if(s.getAvailableSpots() == 0) {
-                if(fullCenters.containsKey(name)){
-                    fullCenters.put(name, fullCenters.get(name) + 1);
-                } else fullCenters.put(name, 1);
-            }
-        }
-
-        if(fullCenters.isEmpty()){
-            str.append("No full centres.\n");
-            return;
-        }
-
-        for (var trainingCount : fullCenters.entrySet()) {
-            str.append(trainingCount.getKey()).append(" : ").append(trainingCount.getValue()).append("\n");
-        }
-    }
-
-    private void appendCurrentlyTraining(StringBuilder str){
-        str.append("\n>> Currently Training\n");
-        HashMap<String,Integer> trainingMap = new HashMap<>();
-
-        for (var s : simData.getCentres()){
-            var name = s.getClass().getSimpleName();
-            var cohortSize = s.enrolledTrainees.size();
-            if(trainingMap.containsKey(name)){
-                trainingMap.put(name, trainingMap.get(name) + cohortSize);
-            } else trainingMap.put(name, cohortSize);
-        }
-
-        if(trainingMap.isEmpty()){
-            str.append("None training.\n");
-            return;
-        }
-
-        for (var trainingCount : trainingMap.entrySet()) {
-            str.append(trainingCount.getKey()).append(" : ").append(trainingCount.getValue()).append("\n");
-        }
-    }
-
-    private void appendWaitingTrainees(StringBuilder str){
-        str.append("\n>> Waiting for enroll.\n");
-        var waiting = new HashMap<TraineeCourse, AtomicInteger>();//simData.getQueueProvider().newTrainees;
-        for(var kvp : simData.getQueueProvider().newTrainees.entrySet())
-        {
-            if(!waiting.containsKey(kvp.getKey()))
-            {
-                waiting.put(kvp.getKey(),new AtomicInteger(0));
-            }
-            waiting.get(kvp.getKey()).incrementAndGet();
-        }
-        for(var kvp : simData.getQueueProvider().pausedTrainees.entrySet())
-        {
-            if(!waiting.containsKey(kvp.getKey()))
-            {
-                waiting.put(kvp.getKey(),new AtomicInteger(0));
-            }
-            waiting.get(kvp.getKey()).incrementAndGet();
-        }
-
-        for(var entry : waiting.entrySet()){
-
-            int aint = entry.getValue().get();
-            str.append(entry.getKey().getCourseName()).append(" : ");
-            if(aint>0) {
-                str.append(aint).append(" waiting\n");
-            }
-            else {
-                str.append("None waiting\n");
-            }
-        }
+        return SimulatorView.getReport(simData,
+                simData.getQueueProvider().pausedTrainees,
+                simData.getQueueProvider().newTrainees);
     }
 }
