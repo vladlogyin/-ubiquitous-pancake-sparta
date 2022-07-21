@@ -50,41 +50,81 @@ public class Simulator {
 
         graduateTrainees();
 
-        // open centres
+        if(monthsPassed%12==0 && monthsPassed>0) {
+            manageClients();
+        }
 
+        // assign benched trainees
+        for(Client c : simData.getClients())
+        {
+            c.takeTraineesThisMonth(simData.getQueueProvider());
+        }
+
+        // open centres every 2 months
         if(monthsPassed%2==0 && monthsPassed>0){
             simData.getCentres().add(simData.getCentreFactory().create());
         }
 
-        // generate trainees
-        simData.getQueueProvider().addTrainees(TraineeFactory.generateTrainees(),false);
-        // run through each training centre to assign trainees or close the centre
-        Iterator<TraineeCentre> i = simData.getCentres().iterator();
-        while(i.hasNext())
-        {
-            var tc = i.next();
-            boolean shouldCloseBefore = tc.shouldClose();
-            //assign trainees
-            tc.enrollTrainees(simData.getQueueProvider());
-            if(tc.shouldClose()) {
-                var traineesToBeMoved = tc.getEnrolledTrainees();
-                // put trainees on pause
-                simData.getQueueProvider().addTrainees(traineesToBeMoved,true);
-                i.remove(); // close centre
-                simData.getCentreFactory().delete(tc);
-                simData.getClosedCentres().add(tc); // keep track of closed centres
-            }
-        }
-        // **training**
+        generateNewTrainees();
+
+        manageCentres();
+
+        notifyMonthHasPassed();
+    }
+
+    private void notifyMonthHasPassed(){
         for(TraineeCentre tc : simData.getCentres())
         {
+            tc.monthPassed();
             for(Trainee tr : tc.getEnrolledTrainees())
             {
                 tr.monthPassed(); // payslip
             }
         }
-
         monthsPassed++;
+    }
+
+    private void generateNewTrainees(){
+        simData.getQueueProvider().addTrainees(TraineeFactory.generateTrainees(),TraineeState.PAUSED);
+    }
+
+    private void manageCentres(){
+        // run through each training centre to assign trainees or close the centre
+        Iterator<TraineeCentre> i = simData.getCentres().iterator();
+        while(i.hasNext())
+        {
+            var tc = i.next();
+            //assign trainees
+            tc.enrollTrainees(simData.getQueueProvider());
+            if(tc.shouldClose()) {
+                var traineesToBeMoved = tc.getEnrolledTrainees();
+                // put trainees on pause
+                simData.getQueueProvider().addTrainees(traineesToBeMoved,TraineeState.PAUSED);
+                i.remove(); // close centre
+                simData.getCentreFactory().delete(tc);
+                simData.getClosedCentres().add(tc); // keep track of closed centres
+            }
+        }
+    }
+
+    private void manageClients()
+    {
+        Iterator<Client> i = simData.getClients().iterator();
+        while(i.hasNext())
+        {
+            Client c = i.next();
+            if(c.isSatisfied())
+            {
+                c.resetClient();
+            }
+            else
+            {
+                i.remove();
+                simData.incrementUnhappyClientCount();
+            }
+        }
+        // Create a new client
+        simData.getClients().add(ClientFactory.create());
     }
 
     private void graduateTrainees() {
@@ -97,8 +137,10 @@ public class Simulator {
                 var tr = i.next();
                 if(tr.hasGraduated())
                 {
-                    //TODO move trainee to a client or to the bench in phase 3
-                    i.remove(); // remove trainee from training centre
+                    i.remove();
+                    Collection<Trainee> ae = new ArrayList(1);
+                    ae.add(tr);
+                    simData.getQueueProvider().addTrainees(ae, TraineeState.BENCHED);
                     simData.incrementGraduateCount();
 
                 }
