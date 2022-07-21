@@ -20,6 +20,10 @@ public class QueueProvider {
 
     public void addTrainees(Collection<Trainee> trainees, boolean arePaused)
     {
+        if(trainees ==null)
+        {
+            return; //TODO log this
+        }
         Map<TraineeCourse, Queue<Trainee>> traineeQueue = arePaused?pausedTrainees:newTrainees;
         for(Trainee tr : trainees)
         {
@@ -29,6 +33,10 @@ public class QueueProvider {
 
     private void addTrainee(Map<TraineeCourse, Queue<Trainee>> queueMap, Trainee tr)
     {
+        if(tr ==null)
+        {
+            return; //TODO log this
+        }
         queueMap.get(tr.getCourseType()).add(tr);
     }
 
