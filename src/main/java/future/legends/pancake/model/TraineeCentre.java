@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.*;
 
 public abstract class TraineeCentre {
@@ -23,7 +25,6 @@ public abstract class TraineeCentre {
     void enrollTrainees(Queue<Trainee> waitingList){
         Random r = new Random();
         int amountToEnroll = r.nextInt((50)) + 1;
-
         if(waitingList.isEmpty()) return; // No one to enroll.
         if(waitingList.size() < amountToEnroll) amountToEnroll = waitingList.size(); // waitingList smaller than amountToEnroll
         if(amountToEnroll > getAvailableSpots()) amountToEnroll = getAvailableSpots(); // amountToEnroll greater than availableSlots
@@ -49,6 +50,7 @@ public abstract class TraineeCentre {
         for (int i = 0; i < amountToEnroll; i++) {
             enrolledTrainees.add(qp.getTrainee());
         }
+        Logger.info(amountToEnroll + " trainees enrolled at TrainingHub");
     }
 
     public int getAvailableSpots(){

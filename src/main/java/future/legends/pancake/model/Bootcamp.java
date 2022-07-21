@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.Collection;
 import java.util.Queue;
 
@@ -38,6 +40,7 @@ public class Bootcamp extends TraineeCentre{
         for (int i = 0; i < traineesToEnroll; i++) {
             enrolledTrainees.add(qp.getTrainee());
         }
+        Logger.info(traineesToEnroll + " trainees enrolled at BootCamp");
     }
     @Override
     void enrollTrainees(Queue<Trainee> waitingList) {
