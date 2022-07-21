@@ -1,9 +1,6 @@
 package future.legends.pancake.viewer;
 
-import future.legends.pancake.model.SimulationContainer;
-import future.legends.pancake.model.Trainee;
-import future.legends.pancake.model.TraineeCentre;
-import future.legends.pancake.model.TraineeCourse;
+import future.legends.pancake.model.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,13 +27,14 @@ public class SimulatorView {
         appendFullCentres(stringBuilder);
         appendCurrentlyTraining(stringBuilder);
         appendWaitingTrainees(stringBuilder);
+        appendClients(stringBuilder);
         appendGraduatedTrainees(stringBuilder);
 
         return stringBuilder.toString();
     }
 
     private static void appendGraduatedTrainees(StringBuilder stringBuilder){
-        stringBuilder.append("\n").append(simData.getGraduateCount()).append(" Spartans have graduated!");
+        stringBuilder.append("\n\n").append(simData.getGraduateCount()).append(" Spartans have graduated!");
     }
 
     private static void getIndividualCourseDetails(StringBuilder stringBuilder, TraineeCentre tc){
@@ -52,7 +50,7 @@ public class SimulatorView {
             }
         }
         for (var courseDetail : traineeCourses.entrySet()) {
-            stringBuilder.append(" - ").append(courseDetail.getValue().intValue()).append(" : ")
+            stringBuilder.append(" - ").append(courseDetail.getValue().intValue()).append(" x ")
                     .append(courseDetail.getKey().getCourseName()).append(" trainees.\n");
         }
     }
@@ -67,7 +65,7 @@ public class SimulatorView {
             str.append("None open.\n");
             return;
         }
-        openCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" open centres.").append("\n"));
+        openCenters.forEach((key, value) -> str.append(key).append("\t: ").append(value).append(" open centres.").append("\n"));
     }
 
     private static void appendClosedCentres(StringBuilder str){
@@ -80,7 +78,7 @@ public class SimulatorView {
             str.append("None closed.\n");
             return;
         }
-        closedCenters.forEach((key, value) -> str.append(key).append(" : ").append(value).append(" closed centres.").append("\n"));
+        closedCenters.forEach((key, value) -> str.append(key).append("\t: ").append(value).append(" closed centres.").append("\n"));
 
     }
 
@@ -164,5 +162,12 @@ public class SimulatorView {
                 counts.put(trainee.getCourseType(), counts.get(trainee.getCourseType()) + 1);
             }
         }
+    }
+
+    private static void appendClients(StringBuilder stringBuilder){
+        stringBuilder.append("\n>> Clients");
+        stringBuilder.append("\nTotal clients\t--> ").append(simData.getHappyClientCount()+simData.getUnhappyClientCount());
+        stringBuilder.append("\nHappy Clients\t--> ").append(simData.getHappyClientCount());
+        stringBuilder.append("\nUnhappy Clients\t--> ").append(simData.getUnhappyClientCount());
     }
 }
