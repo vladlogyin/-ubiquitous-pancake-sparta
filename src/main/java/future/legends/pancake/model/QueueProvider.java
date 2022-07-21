@@ -21,7 +21,7 @@ public class QueueProvider {
     public void addTrainees(Collection<Trainee> trainees, boolean arePaused)
     {
         Map<TraineeCourse, Queue<Trainee>> traineeQueue = arePaused?pausedTrainees:newTrainees;
-        for(Trainee tr : trainees)
+            for(Trainee tr : trainees)
         {
             addTrainee(traineeQueue,tr);
         }
