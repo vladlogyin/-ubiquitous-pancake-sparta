@@ -1,5 +1,6 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
 import org.apache.logging.log4j.core.util.KeyValuePair;
 
 import java.util.*;
@@ -34,9 +35,12 @@ public class Simulator {
      */
     public void simulateMonths(int months)
     {
+        Logger.info("Simulation started");
         for(int i=0;i<months;i++) {
             simulateMonth();
+            Logger.info("Simulated month " + (i+1));
         }
+        Logger.info("Simulation finished");
     }
 
     /**
@@ -53,6 +57,7 @@ public class Simulator {
 
         if(monthsPassed%2==0 && monthsPassed>0){
             simData.getCentres().add(simData.getCentreFactory().create());
+            Logger.info("Opened a " + simData.getCentres().get(simData.getCentres().size()-1).getClass().getSimpleName());
         }
 
         // generate trainees
@@ -70,6 +75,7 @@ public class Simulator {
                 // put trainees on pause
                 simData.getQueueProvider().addTrainees(traineesToBeMoved,true);
                 i.remove(); // close centre
+                Logger.info(tc.getClass().getSimpleName() + " closed and " + tc.getEnrolledTrainees().size() + " trainees added to queue");
                 simData.getCentreFactory().delete(tc);
                 simData.getClosedCentres().add(tc); // keep track of closed centres
             }
@@ -89,7 +95,7 @@ public class Simulator {
     private void graduateTrainees() {
         for(TraineeCentre tc : simData.getCentres())
         {
-
+            int preGraduationCount = simData.getGraduateCount();
             Iterator<Trainee> i = tc.getEnrolledTrainees().iterator();
             while(i.hasNext())
             {
@@ -102,6 +108,7 @@ public class Simulator {
 
                 }
             }
+            Logger.info((simData.getGraduateCount() - preGraduationCount) + " trainees graduated " + tc.getClass().getSimpleName());
         }
     }
 
