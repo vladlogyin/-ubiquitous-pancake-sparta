@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.*;
 
 public abstract class TraineeCentre {
@@ -20,10 +22,9 @@ public abstract class TraineeCentre {
         return enrolledTrainees.size()<25;
     }
 
-    void enrollTrainees(Queue<Trainee> waitingList){
+    public void enrollTrainees(Queue<Trainee> waitingList){
         Random r = new Random();
         int amountToEnroll = r.nextInt((50)) + 1;
-
         if(waitingList.isEmpty()) return; // No one to enroll.
         if(waitingList.size() < amountToEnroll) amountToEnroll = waitingList.size(); // waitingList smaller than amountToEnroll
         if(amountToEnroll > getAvailableSpots()) amountToEnroll = getAvailableSpots(); // amountToEnroll greater than availableSlots
@@ -31,7 +32,7 @@ public abstract class TraineeCentre {
         enrollTrainees(waitingList, amountToEnroll);
     }
 
-    protected void enrollTrainees(Queue<Trainee> waitingList, int toEnroll){
+    public void enrollTrainees(Queue<Trainee> waitingList, int toEnroll){
         for (int i = 0; i < toEnroll; i++) {
             enrolledTrainees.add(waitingList.remove());
         }
@@ -42,13 +43,14 @@ public abstract class TraineeCentre {
         Random r = new Random();
         int amountToEnroll = r.nextInt(50) + 1;
 
-        int traineesAvailable = qp.getAvailableCount();
+        int traineesAvailable = qp.getAvailableTraineeCount();
         if(traineesAvailable<=0) return; // No one to enroll.
         if(traineesAvailable < amountToEnroll) amountToEnroll = traineesAvailable; // qp smaller than amountToEnroll
         if(amountToEnroll > getAvailableSpots()) amountToEnroll = getAvailableSpots(); // qp greater than availableSlots
         for (int i = 0; i < amountToEnroll; i++) {
             enrolledTrainees.add(qp.getTrainee());
         }
+        Logger.info(amountToEnroll + " trainees enrolled at TrainingHub");
     }
 
     public int getAvailableSpots(){

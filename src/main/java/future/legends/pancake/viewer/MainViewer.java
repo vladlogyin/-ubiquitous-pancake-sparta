@@ -1,5 +1,7 @@
 package future.legends.pancake.viewer;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -31,11 +33,16 @@ public class MainViewer {
             }
         }
 
+        Logger.info("User selected a " + months + " month simulation");
         return months;
 
     }
 
-    public int getSimulationReportFrequency(){
+    /**
+     *
+     * @return returns true if every month
+     */
+    public boolean getSimulationReportEveryMonth(){
 
         boolean validInput = false;
         int reportFrequency = 0;
@@ -62,15 +69,13 @@ public class MainViewer {
 
         }
 
-        return reportFrequency;
+        return reportFrequency==2;
 
     }
 
     public void displaySimulationReport(String simulationReport){
-
-        System.out.println("Simulation Report");
         System.out.println(simulationReport);
-
+        Logger.info("Displayed simulation report");
     }
 
 }

@@ -90,9 +90,28 @@ We used the following tools to manage our project:
 - If a client does not collect enough trainees from the bench within a year, they will leave unhappy.
 - If a client does collect enough trainees from the bench within a year, they will leave happy and return the next year with the same requirement.
 
+## Implementation
+
+To meet the requirements of the application, its various constituent parts were made into objects. Namely, these are: Trainees, Clients and Training Centres. These objects contain attributes to describe their behaviours and distinguish them from objects of the same type. One such attribute is the course type, which was created as an enum in ```TraineeCourse.java```. This attribute in particular is key part of the application since it is not only used to describe the Trainee. It is also used for defining the type of trainees a client wants as well as defining what type of trainee a particular training centre will take. These objects also have factory methods so they can be created in accordance with the requirements.
+
+Trainee objects are generated in collections which contain a random number of trainees between 50 and 100 at each call of the ```generateTrainees()``` method. Each trainee in the collection is assigned a course type at random using the enum class ```TraineeCourse.java```. 
+
 ## Results
 
 ## Testing
+
+The public methods with "non-void" return types each have JUnit tests associated with them. These tests range from standard ```Assertions.assertEquals``` tests, to see if the method returns the expected value, to testing edge cases, invalid inputs (a negative number of months for example) or null inputs. As a result of this, there are also various tests to see if exceptions were thrown or not thrown using ```Assertions.assertThrows()``` or ```Assertions.assertDoesNotThrow()``` depending on what was desired. For example, the ```enrollTrainees()``` method in ```Bootcamp.Java``` is associated with a test to make sure a ```NullPointerException``` is not thrown when a null queue is passed into the method, so the program does nothing instead of crashing if this situation were to arise.
+
+Testing Results Table
+| Class | All Tests Passed? |
+| ----- | ------------- |
+| *insert class here* | :white_check_mark: | 
+| *insert class here* | :white_check_mark: | 
+| *insert class here* | :white_check_mark: | 
+| *insert class here* | :white_check_mark: | 
+| *insert class here* | :white_check_mark: | 
+        
+          
 
 ## Contact
 Team members:

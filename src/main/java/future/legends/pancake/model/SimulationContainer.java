@@ -11,6 +11,9 @@ public class SimulationContainer {
     private List<TraineeCentre> centres;
     private List<TraineeCentre> closedCentres;
 
+    private List<Client> clients;
+    private int unhappyClientCount;
+
     private CentreFactory centreFactory;
     private QueueProvider queueProvider;
 
@@ -18,6 +21,8 @@ public class SimulationContainer {
         waitingStudents = new LinkedList<>();
         centres = new ArrayList<TraineeCentre>();
         closedCentres = new ArrayList<TraineeCentre>();
+        clients = new ArrayList<>();
+        unhappyClientCount = 0;
         queueProvider = new QueueProvider();
         centreFactory = new CentreFactory();
     }
@@ -28,7 +33,7 @@ public class SimulationContainer {
         return "Number of open centres: " + centres.size() +
                 "\nNumber of full centres: " + centres.stream().filter((c)->{return c.getAvailableSpots()<=0;}).count() +
                 "\nNumber of trainees currently training: " + countEnrolledStudents() +
-                "\nNumber of trainees on the waiting list: " + queueProvider.getAvailableCount() +
+                "\nNumber of trainees on the waiting list: " + queueProvider.getAvailableTraineeCount() +
                 "\nNumber of trainees who have graduated: " + graduatedCount;
     }
 
@@ -78,6 +83,23 @@ public class SimulationContainer {
         return closedCentres;
     }
 
+
+    public List<Client> getClients()
+    {
+        return clients;
+    }
+    public void incrementUnhappyClientCount()
+    {
+        unhappyClientCount++;
+    }
+    public int getUnhappyClientCount()
+    {
+        return unhappyClientCount;
+    }
+    public int getHappyClientCount()
+    {
+        return clients.size();
+    }
     public QueueProvider getQueueProvider()
     {
         return queueProvider;
