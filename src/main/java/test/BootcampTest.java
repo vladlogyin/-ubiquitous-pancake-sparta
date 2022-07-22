@@ -29,10 +29,4 @@ class BootcampTest {
         assertTrue(bootcamp.shouldClose()); // 3 inactive months
     }
 
-    @Test
-    void enrollNullTest() {
-        // exmplanation: if an empty queue is provided, please do nothing instead of crashing
-        Assertions.assertDoesNotThrow(() -> bootcamp.enrollTrainees((QueueProvider) null));
-    }
-
 }
