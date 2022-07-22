@@ -162,4 +162,15 @@ public class QueueProvider {
         }
         return count;
     }
+
+    // Returns a copy of the Map data for the simulator view to access detailed information.
+    public Map<TraineeCourse, Queue<Trainee>> getMap(TraineeState tstate){
+        Map<TraineeCourse, Queue<Trainee>> traineeQueue = switch(tstate)
+        {
+            case NEW -> newTrainees;
+            case PAUSED -> pausedTrainees;
+            case BENCHED -> benchTrainees;
+        };
+        return Map.copyOf(traineeQueue);
+    }
 }

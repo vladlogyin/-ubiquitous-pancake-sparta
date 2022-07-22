@@ -35,7 +35,11 @@ public class MainViewer {
 
     }
 
-    public int getSimulationReportFrequency(){
+    /**
+     *
+     * @return returns true if every month
+     */
+    public boolean getSimulationReportEveryMonth(){
 
         boolean validInput = false;
         int reportFrequency = 0;
@@ -62,15 +66,12 @@ public class MainViewer {
 
         }
 
-        return reportFrequency;
+        return reportFrequency==2;
 
     }
 
     public void displaySimulationReport(String simulationReport){
-
-        System.out.println("Simulation Report");
         System.out.println(simulationReport);
-
     }
 
 }

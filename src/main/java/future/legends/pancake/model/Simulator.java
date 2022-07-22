@@ -155,8 +155,6 @@ public class Simulator {
 
     @Override
     public String toString() {
-        return SimulatorView.getReport(simData,
-                simData.getQueueProvider().pausedTrainees,
-                simData.getQueueProvider().newTrainees);
+        return SimulatorView.getReport(simData);
     }
 }

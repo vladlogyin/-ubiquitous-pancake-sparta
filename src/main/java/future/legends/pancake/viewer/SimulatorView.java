@@ -11,16 +11,35 @@ public class SimulatorView {
     private static Map<TraineeCourse, Queue<Trainee>> pausedTrainees;
     private static Map<TraineeCourse, Queue<Trainee>> newTrainees;
 
-    public static String getReport(SimulationContainer sim,
-                                   Map<TraineeCourse, Queue<Trainee>> pausedTrainees,
-                                   Map<TraineeCourse, Queue<Trainee>> newTrainees)
+    public static String getMonthlyReport(int currentMonth, SimulationContainer sim){
+        StringBuilder sb = new StringBuilder(200);
+
+        if(sim == null) return "Unable to load simulation data!";
+        SimulatorView.simData = sim;
+        SimulatorView.pausedTrainees = sim.getQueueProvider().getMap(TraineeState.PAUSED);
+        SimulatorView.newTrainees = sim.getQueueProvider().getMap(TraineeState.NEW);
+
+        sb.append("\n>>>>>> Month ").append(currentMonth).append(" Report \n");
+        appendOpenCentres(sb);
+        appendClosedCentres(sb);
+        appendFullCentres(sb);
+        appendCurrentlyTraining(sb);
+        appendWaitingTrainees(sb);
+        appendClients(sb);
+        appendGraduatedTrainees(sb);
+
+        return sb.toString();
+    }
+
+    public static String getReport(SimulationContainer sim)
     {
         if(sim == null) return "Unable to load simulation data!";
         SimulatorView.simData = sim;
-        SimulatorView.pausedTrainees = pausedTrainees;
-        SimulatorView.newTrainees = newTrainees;
+        SimulatorView.pausedTrainees = sim.getQueueProvider().getMap(TraineeState.PAUSED);
+        SimulatorView.newTrainees = sim.getQueueProvider().getMap(TraineeState.NEW);
 
         StringBuilder stringBuilder = new StringBuilder(1000);
+        stringBuilder.append("\n>>>>>> Whole Simulation Report\n");
 
         appendOpenCentres(stringBuilder);
         appendClosedCentres(stringBuilder);
@@ -65,7 +84,7 @@ public class SimulatorView {
             str.append("None open.\n");
             return;
         }
-        openCenters.forEach((key, value) -> str.append(key).append("\t: ").append(value).append(" open centres.").append("\n"));
+        openCenters.forEach((key, value) -> str.append(key).append("\t: ").append(value).append("\n"));
     }
 
     private static void appendClosedCentres(StringBuilder str){
@@ -78,7 +97,7 @@ public class SimulatorView {
             str.append("None closed.\n");
             return;
         }
-        closedCenters.forEach((key, value) -> str.append(key).append("\t: ").append(value).append(" closed centres.").append("\n"));
+        closedCenters.forEach((key, value) -> str.append(key).append("\t: ").append(value).append("\n"));
 
     }
 
