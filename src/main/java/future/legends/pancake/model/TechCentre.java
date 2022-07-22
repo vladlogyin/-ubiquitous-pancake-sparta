@@ -12,13 +12,13 @@ public class TechCentre extends TraineeCentre{
         return course;
     }
 
-    TechCentre(){
+    public TechCentre(){
         Random r = new Random();
         course = TraineeCourse.values()[r.nextInt(TraineeCourse.values().length)];
         capacity = 200;
     }
 
-    void enrollTrainees(QueueProvider qp) {
+    public void enrollTrainees(QueueProvider qp) {
         // TODO "DRY-B-GONE"
         Random r = new Random();
         int amountToEnroll = r.nextInt(50) + 1;
@@ -37,7 +37,7 @@ public class TechCentre extends TraineeCentre{
     }
 
     @Override
-    void monthPassed() {
+    public void monthPassed() {
         monthsAlive++;
     }
 

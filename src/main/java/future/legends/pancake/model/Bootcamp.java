@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Queue;
 
 public class Bootcamp extends TraineeCentre{
-    Bootcamp() {
+    public Bootcamp() {
         capacity = 500;
     }
     int numberOfLowAttendanceMonths = 0;
@@ -17,7 +17,7 @@ public class Bootcamp extends TraineeCentre{
     }
 
     @Override
-    void monthPassed() {
+    public void monthPassed() {
         monthsAlive++;
 
         if (getNumberOfEnrolledTrainees() < 25) {
@@ -28,11 +28,11 @@ public class Bootcamp extends TraineeCentre{
     }
 
     @Override
-    boolean shouldClose() {
+    public boolean shouldClose() {
         return numberOfLowAttendanceMonths >= 3;
     }
 
-    void enrollTrainees(QueueProvider qp) {
+    public void enrollTrainees(QueueProvider qp) {
         // TODO "DRY-B-GONE
         int traineesToEnroll = qp.getAvailableTraineeCount(); // get available trainees
         if(traineesToEnroll<=0) return; // No one to enroll.
@@ -43,7 +43,7 @@ public class Bootcamp extends TraineeCentre{
         Logger.info(traineesToEnroll + " trainees enrolled at BootCamp");
     }
     @Override
-    void enrollTrainees(Queue<Trainee> waitingList) {
+    public void enrollTrainees(Queue<Trainee> waitingList) {
         // TODO maybe instead of accepting 1-50 random employees implement a method that
         //      takes on as many trainees as possible.
         int amountToEnroll = getAvailableSpots();
