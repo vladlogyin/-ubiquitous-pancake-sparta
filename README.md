@@ -98,9 +98,23 @@ Below is an image of our task board where we broke requirements down into small 
 
 To meet the requirements of the application, its various constituent parts were made into objects. Namely, these are: Trainees, Clients and Training Centres. These objects contain attributes to describe their behaviours and distinguish them from objects of the same type. One such attribute is the course type, which was created as an enum in ```TraineeCourse.java```. This attribute in particular is key part of the application since it is not only used to describe the Trainee. It is also used for defining the type of trainees a client wants as well as defining what type of trainee a particular training centre will take. These objects also have factory methods so they can be created in accordance with the requirements.
 
-Trainee objects are generated in collections which contain a random number of trainees between 50 and 100 at each call of the ```generateTrainees()``` method. Each trainee in the collection is assigned a course type at random using the enum class ```TraineeCourse.java```. 
+Trainee objects are generated in collections which contain a random number of trainees between 50 and 100 at each call of the ```generateTrainees()``` method. Each trainee in the collection is assigned a course type at random using the enum class ```TraineeCourse.java``` by storing the enums in an array and randomly selecting an index of that array.
+
+Client objects have two attributes and are created in a similar way to trainees. These attributes are: the course type wanted by the trainee, where the enums in ```TraineeCourse.java``` are used; And the number of trainees they are requesting. At each call of the ```create()``` method in ```ClientFactory.java``` a random number between 15 and 30 clients are created and stored in a collection.
+
+
+
+
+
+
+
 
 ## Results
+
+- Improved our communication skills and practiced pair programming
+- Had additional practice with applying OOP concepts such as interface implementation 
+- Application of functional programming practice such as utilizing streams in Java
+- Practiced reducing requirements to smaller tasks and separating responsibilities between team members to enable parallel working as a team on the same requirements
 
 ## Testing
 
