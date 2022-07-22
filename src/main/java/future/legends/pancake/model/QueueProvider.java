@@ -1,5 +1,7 @@
 package future.legends.pancake.model;
 
+import future.legends.pancake.logger.Logger;
+
 import java.util.*;
 
 public class QueueProvider {

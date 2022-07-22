@@ -13,7 +13,7 @@ public class TraineeFactory {
     }
 
     public static Collection <Trainee> generateTrainees(int numOfTrainees) {
-        Collection<Trainee> traineeCollection = new ArrayList<Trainee>(numOfTrainees);
+        Collection<Trainee> traineeCollection = new ArrayList<Trainee>(numOfTrainees>0?numOfTrainees:0);
         for (int i = 0; i < numOfTrainees; i++) {
             TraineeCourse[] courses = TraineeCourse.values();
             int selectEnum = new Random().nextInt(courses.length);
