@@ -100,7 +100,7 @@ To meet the requirements of the application, its various constituent parts were 
 
 Trainee objects are generated in collections which contain a random number of trainees between 50 and 100 at each call of the ```generateTrainees()``` method. Each trainee in the collection is assigned a course type at random using the enum class ```TraineeCourse.java``` by storing the enums in an array and randomly selecting an index of that array.
 
-Client objects have two attributes and are created in a similar way to trainees. These attributes are: the course type wanted by the trainee, where the enums in ```TraineeCourse.java``` are used; And the number of trainees they are requesting. At each call of the ```create()``` method in ```ClientFactory.java``` a random number between 15 and 30 clients are created and stored in a collection.
+Client objects have two attributes and are created in a similar way to trainees. These attributes are: the course type wanted by the trainee, where the enums in ```TraineeCourse.java``` are used; And the number of trainees they are requesting. At each call of the ```create()``` method in ```ClientFactory.java``` a client which has 'requested' a random number of trainees between 15 and 30 of a particular course type (also determined randomly) are created and stored in a collection. The simulator class ```Simulator.java``` keeps track of the clients' satisfaction and handles them accordingly.
 
 
 
